@@ -18,11 +18,11 @@ public class UserRepository {
      * @return пользователь с id.
      */
     public User create(User user) {
-        Session session = sf.openSession();
-        session.beginTransaction();
-        session.save(user);
-        session.getTransaction().commit();
-        session.close();
+        try (Session session = sf.openSession()) {
+            session.beginTransaction();
+            session.save(user);
+            session.getTransaction().commit();
+        }
         return user;
     }
 
@@ -31,11 +31,11 @@ public class UserRepository {
      * @param user пользователь.
      */
     public void update(User user) {
-        Session session = sf.openSession();
-        session.beginTransaction();
-        session.update(user);
-        session.getTransaction().commit();
-        session.close();
+        try (Session session = sf.openSession()) {
+            session.beginTransaction();
+            session.update(user);
+            session.getTransaction().commit();
+        }
     }
 
     /**
@@ -43,12 +43,12 @@ public class UserRepository {
      * @param userId ID
      */
     public void delete(int userId) {
-        Session session = sf.openSession();
-        session.beginTransaction();
-        User user = session.get(User.class, userId);
-        session.delete(user);
-        session.getTransaction().commit();
-        session.close();
+        try (Session session = sf.openSession()) {
+            session.beginTransaction();
+            User user = session.get(User.class, userId);
+            session.delete(user);
+            session.getTransaction().commit();
+        }
     }
 
     /**
@@ -56,11 +56,12 @@ public class UserRepository {
      * @return список пользователей.
      */
     public List<User> findAllOrderById() {
-        Session session = sf.openSession();
-        session.beginTransaction();
-        List<User> result = session.createQuery("from ru.job4j.cars.model.User ORDER BY id", User.class).list();
-        session.getTransaction().commit();
-        session.close();
+        List<User> result;
+        try (Session session = sf.openSession()) {
+            session.beginTransaction();
+             result = session.createQuery("from ru.job4j.cars.model.User ORDER BY id", User.class).list();
+            session.getTransaction().commit();
+        }
         return result;
     }
 
@@ -69,11 +70,12 @@ public class UserRepository {
      * @return пользователь.
      */
     public Optional<User> findById(int userId) {
-        Session session = sf.openSession();
-        session.beginTransaction();
-        User user = session.get(User.class, userId);
-        session.getTransaction().commit();
-        session.close();
+        User user;
+        try (Session session = sf.openSession()) {
+            session.beginTransaction();
+            user = session.get(User.class, userId);
+            session.getTransaction().commit();
+        }
         return Optional.of(user);
     }
 
@@ -83,13 +85,14 @@ public class UserRepository {
      * @return список пользователей.
      */
     public List<User> findByLikeLogin(String key) {
-        Session session = sf.openSession();
-        session.beginTransaction();
-        List<User> result = session
-                .createQuery("from ru.job4j.cars.model.User WHERE login LIKE :key", User.class)
-                .setParameter("key", "%" + key + "%").list();
-        session.getTransaction().commit();
-        session.close();
+        List<User> result;
+        try (Session session = sf.openSession()) {
+            session.beginTransaction();
+            result = session
+                    .createQuery("from ru.job4j.cars.model.User WHERE login LIKE :key", User.class)
+                    .setParameter("key", "%" + key + "%").list();
+            session.getTransaction().commit();
+        }
         return result;
     }
 
@@ -99,13 +102,14 @@ public class UserRepository {
      * @return Optional or user.
      */
     public Optional<User> findByLogin(String login) {
-        Session session = sf.openSession();
-        session.beginTransaction();
-        Optional<User> user = session
-                .createQuery("from ru.job4j.cars.model.User WHERE login = :login", User.class)
-                .setParameter("login", login).uniqueResultOptional();
-        session.getTransaction().commit();
-        session.close();
-        return user;
+        Optional<User> result;
+        try (Session session = sf.openSession()) {
+            session.beginTransaction();
+            result = session
+                    .createQuery("from ru.job4j.cars.model.User WHERE login = :login", User.class)
+                    .setParameter("login", login).uniqueResultOptional();
+            session.getTransaction().commit();
+        }
+        return result;
     }
 }
