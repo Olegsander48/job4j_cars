@@ -12,7 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "auto_post")
+@Table(name = "post")
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,4 +28,8 @@ public class Post {
     @OneToMany
     @JoinColumn(name = "post_id")
     private List<PriceHistory> priceHistory;
+
+    @ManyToOne
+    @JoinColumn(name = "car_id")
+    private Car car;
 }
