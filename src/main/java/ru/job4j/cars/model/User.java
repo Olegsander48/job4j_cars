@@ -25,4 +25,10 @@ public class User {
             inverseJoinColumns = {@JoinColumn(name = "post_id")}
     )
     private List<Post> participates = new ArrayList<>();
+
+    public User(String login, String password, List<Post> participates) {
+        this.login = login;
+        this.password = password;
+        this.participates = participates;
+    }
 }

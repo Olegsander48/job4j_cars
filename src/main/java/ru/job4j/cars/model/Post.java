@@ -3,6 +3,7 @@ package ru.job4j.cars.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -21,15 +22,30 @@ public class Post {
     private String description;
     private LocalDateTime created;
 
+    @Column(name = "photo_path")
+    private String photoPath;
+
     @ManyToOne
     @JoinColumn(name = "auto_user_id")
+    @ToString.Exclude
     private User user;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "post_id")
+    @ToString.Exclude
     private List<PriceHistory> priceHistory;
 
     @ManyToOne
     @JoinColumn(name = "car_id")
+    @ToString.Exclude
     private Car car;
+
+    public Post(String description, LocalDateTime created, String photoPath, User user, List<PriceHistory> priceHistory, Car car) {
+        this.description = description;
+        this.created = created;
+        this.photoPath = photoPath;
+        this.user = user;
+        this.priceHistory = priceHistory;
+        this.car = car;
+    }
 }

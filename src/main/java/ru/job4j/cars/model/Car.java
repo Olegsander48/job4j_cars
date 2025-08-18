@@ -30,4 +30,11 @@ public class Car {
             inverseJoinColumns = {
                     @JoinColumn(name = "owner_id", nullable = false, updatable = false)})
     private Set<Owner> owners = new HashSet<>();
+
+    public Car(String name, Engine engine, Owner owner, Set<Owner> owners) {
+        this.name = name;
+        this.engine = engine;
+        this.owner = owner;
+        this.owners = owners;
+    }
 }

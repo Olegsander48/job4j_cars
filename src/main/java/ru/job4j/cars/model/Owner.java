@@ -18,4 +18,9 @@ public class Owner {
     @ManyToOne
     @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "USER_ID_FK"))
     private User user;
+
+    public Owner(String name, User user) {
+        this.name = name;
+        this.user = user;
+    }
 }

@@ -22,4 +22,10 @@ public class PriceHistory {
     private long before;
     private long after;
     private LocalDateTime created;
+
+    public PriceHistory(long before, long after, LocalDateTime created) {
+        this.before = before;
+        this.after = after;
+        this.created = created;
+    }
 }
