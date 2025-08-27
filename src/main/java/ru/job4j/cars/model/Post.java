@@ -35,7 +35,7 @@ public class Post {
     @ToString.Exclude
     private List<PriceHistory> priceHistory;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "car_id")
     @ToString.Exclude
     private Car car;
@@ -47,5 +47,9 @@ public class Post {
         this.user = user;
         this.priceHistory = priceHistory;
         this.car = car;
+    }
+
+    public Post(String description) {
+        this.description = description;
     }
 }
