@@ -1,5 +1,6 @@
 package ru.job4j.cars.service.post;
 
+import ru.job4j.cars.dto.CarPost;
 import ru.job4j.cars.model.Post;
 import ru.job4j.cars.service.CrudService;
 
@@ -16,4 +17,6 @@ public interface PostService extends CrudService<Post> {
     List<Post> findByNotNullPhotoPath();
 
     List<Post> findByCarBrand(String brand);
+
+    List<CarPost> findALlCarPosts();
 }

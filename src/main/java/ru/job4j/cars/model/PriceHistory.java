@@ -23,6 +23,10 @@ public class PriceHistory {
     private long after;
     private LocalDateTime created;
 
+    @ManyToOne
+    @JoinColumn(name = "post_id")
+    private Post post;
+
     public PriceHistory(long before, long after, LocalDateTime created) {
         this.before = before;
         this.after = after;

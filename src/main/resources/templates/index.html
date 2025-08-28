@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{fragements/header :: header}">
+    <title></title>
+</head>
+<body>
+<div class="container">
+    <div class="align-items-center">
+        <h4>Добро пожаловать на BuyCar.com</h4>
+    </div>
+    <div class="row">
+        <div class="col-2"></div>
+        <div class="col-8">
+            <p></p>
+            <ul class="list-group">
+                <li class="list-group-item">Переходите на страницу <a th:href="@{/posts}">объявлений</a> чтобы просмотреть автомобили в продаже, узнать цену и связаться с владельцем</li>
+                <li class="list-group-item">Если вы хотите продать свой автомобиль - переходите <a th:href="@{/posts/create}">на страницу</a> публикации объявления</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<footer th:insert="~{fragements/footer :: footer}"></footer>
+</body>
+</html>

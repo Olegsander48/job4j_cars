@@ -2,8 +2,10 @@ package ru.job4j.cars.service.post;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.job4j.cars.dto.CarPost;
 import ru.job4j.cars.model.Post;
 import ru.job4j.cars.repository.PostRepository;
+import ru.job4j.cars.repository.PriceHistoryRepository;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -14,6 +16,7 @@ import java.util.Optional;
 @AllArgsConstructor
 public class SimplePostService implements PostService {
     private PostRepository postRepository;
+    private PriceHistoryRepository priceHistoryRepository;
 
     @Override
     @Transactional
@@ -96,5 +99,21 @@ public class SimplePostService implements PostService {
             throw new IllegalArgumentException("brand cannot be null/empty");
         }
         return postRepository.findByCarBrand(brand.toLowerCase().trim());
+    }
+
+    @Override
+    public List<CarPost> findALlCarPosts() {
+        return postRepository.findAllOrderById().stream()
+                .map(post -> new CarPost(
+                        post.getId(),
+                        post.getCar().getName(),
+                        post.getCar().getEngine().getName(),
+                        priceHistoryRepository.findNewestByCarId(post.getId())
+                                .orElseThrow(NoSuchElementException::new)
+                                .getAfter(),
+                        post.getPhotoPath(),
+                        post.getDescription(),
+                        post.getCreated()))
+                .toList();
     }
 }

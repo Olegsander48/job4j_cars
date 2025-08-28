@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{fragements/header :: header}"></head>
+<body>
+<div class="container">
+    <div class="row">
+        <table class="table m-0">
+            <tbody>
+            <tr th:each="carPost: ${carPosts}">
+                <td>
+                    <div class="row">
+                        <div class="col-5">
+                            <div class="mb-3">
+                                <a th:href="@{/posts/info}"><img th:src="@{/files/{fileName}(fileName=*{carPost.photoPath})}" class="w-100" alt="No image"></a>
+                            </div>
+                        </div>
+                        <div class="col-7">
+                            <div class="row">
+                                <div class="col-3">
+                                    <label class="form-label"><b>Модель:</b></label>
+                                </div>
+                                <div class="col-9">
+                                    <p th:text="${carPost.model}"></p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3">
+                                    <label class="form-label"><b>Двигатель:</b></label>
+                                </div>
+                                <div class="col-9">
+                                    <p th:text="${carPost.engine}"/>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3">
+                                    <label class="form-label"><b>Цена:</b></label>
+                                </div>
+                                <div class="col-9">
+                                    <p th:text="${carPost.price}"/>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3">
+                                    <label class="form-label"><b>Описание:</b></label>
+                                </div>
+                                <div class="col-9">
+                                    <p th:text="${carPost.description}"/>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3">
+                                    <label class="form-label"><b>Опубликовано:</b></label>
+                                </div>
+                                <div class="col-9">
+                                    <p th:text="${carPost.getFormattedCreationDate()}"/>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <a th:href="@{/posts/info/{postId}(postId=${carPost.id})}" > <button type="button" class="btn btn-warning">Больше информации</button> </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-6">
+            <div class="row">
+                <div class="col-3"></div>
+                <div class="col-5">
+                    <a class="btn btn-info w-100"
+                       th:href="@{/posts/create}">Подать объявление</a></div>
+            </div>
+        </div>
+    </div>
+</div>
+<footer th:insert="~{fragements/footer :: footer}"></footer>
+</body>
+</html>
