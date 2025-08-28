@@ -31,6 +31,17 @@ class UserRepositoryTest {
     }
 
     @Test
+    void whenCreateUserThenCreateAgainThenDbHasSameUser() {
+        User user = new User("testLogin@gmail.com", "TestPassword", null);
+        userRepository.create(user);
+        userRepository.create(user);
+        Optional<User> result = userRepository.findById(user.getId());
+        assertThat(result).isPresent()
+                .map(User::getLogin)
+                .hasValue(user.getLogin());
+    }
+
+    @Test
     void whenAdd3UsersThenDbHas3Users() {
         User user1 = new User("testLogin1@gmail.com", "TestPassword1", null);
         User user2 = new User("testLogin2@gmail.com", "TestPassword2", null);

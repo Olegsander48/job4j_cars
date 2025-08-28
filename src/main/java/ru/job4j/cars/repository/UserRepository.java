@@ -62,14 +62,14 @@ public class UserRepository {
     }
 
     /**
-     * Список пользователей по login LIKE %key%
-     * @param key key
+     * Список пользователей по login LIKE %login%
+     * @param login login
      * @return список пользователей.
      */
-    public List<User> findByLikeLogin(String key) {
+    public List<User> findByLikeLogin(String login) {
         return crudRepository.query(
-                "from User where login like :fKey", User.class,
-                Map.of("fKey", "%" + key + "%")
+                "from User where login like :fLogin", User.class,
+                Map.of("fLogin", "%" + login + "%")
         );
     }
 
