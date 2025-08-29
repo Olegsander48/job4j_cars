@@ -85,4 +85,16 @@ public class OwnerRepository {
                 Map.of("fName", name)
         );
     }
+
+    /**
+     * Найти владельца по user id.
+     * @param userId айди пользователя.
+     * @return Optional of owner.
+     */
+    public Optional<Owner> findByUserId(int userId) {
+        return crudRepository.optional(
+                "from Owner where user.id = :userId", Owner.class,
+                Map.of("userId", userId)
+        );
+    }
 }

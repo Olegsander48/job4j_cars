@@ -3,10 +3,7 @@ package ru.job4j.cars.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Data
 @Entity
@@ -18,19 +15,12 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String login;
+    private String name;
     private String password;
 
-    @ManyToMany
-    @JoinTable(
-            name = "participates",
-            joinColumns = {@JoinColumn(name = "user_id")},
-            inverseJoinColumns = {@JoinColumn(name = "post_id")}
-    )
-    private List<Post> participates = new ArrayList<>();
-
-    public User(String login, String password, List<Post> participates) {
+    public User(String login, String name, String password) {
         this.login = login;
+        this.name = name;
         this.password = password;
-        this.participates = participates;
     }
 }

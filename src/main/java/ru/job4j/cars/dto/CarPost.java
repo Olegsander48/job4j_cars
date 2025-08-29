@@ -15,7 +15,12 @@ public class CarPost {
     private long price;
     private String photoPath;
     private String description;
+    private int userId;
     private LocalDateTime created;
+
+    public CarPost() {
+        created = LocalDateTime.now();
+    }
 
     public String getFormattedCreationDate() {
         return created.format(DateTimeFormatter.ofPattern("HH:mm dd-MM-yyyy"));

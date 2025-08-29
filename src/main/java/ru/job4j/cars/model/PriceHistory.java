@@ -32,4 +32,11 @@ public class PriceHistory {
         this.after = after;
         this.created = created;
     }
+
+    public PriceHistory(long before, long after, LocalDateTime created, Post post) {
+        this.before = before;
+        this.after = after;
+        this.created = created;
+        this.post = post;
+    }
 }

@@ -79,4 +79,12 @@ public class SimpleOwnerService implements OwnerService {
         }
         return ownerRepository.findByName(name.toLowerCase().trim());
     }
+
+    @Override
+    public Optional<Owner> findByUserId(int userId) {
+        if (userId <= 0) {
+            throw new IllegalArgumentException("UserId cannot be negative or zero");
+        }
+        return ownerRepository.findByUserId(userId);
+    }
 }

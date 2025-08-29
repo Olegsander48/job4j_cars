@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:insert="~{fragements/header :: header}"></head>
+<head th:insert="~{fragments/header :: header}"></head>
 <body>
 <div class="container">
     <div class="row">
@@ -69,9 +69,10 @@
     </div>
     <hr>
     <div class="row">
+        <div class="col-6"></div>
         <div class="col-6">
             <div class="row">
-                <div class="col-3"></div>
+                <div class="col-6"></div>
                 <div class="col-5">
                     <a class="btn btn-info w-100"
                        th:href="@{/posts/create}">Подать объявление</a></div>
@@ -79,6 +80,6 @@
         </div>
     </div>
 </div>
-<footer th:insert="~{fragements/footer :: footer}"></footer>
+<footer th:insert="~{fragments/footer :: footer}"></footer>
 </body>
 </html>
