@@ -9,7 +9,6 @@ import ru.job4j.cars.dto.CarPost;
 import ru.job4j.cars.model.User;
 import ru.job4j.cars.service.post.PostService;
 import ru.job4j.cars.utility.PhotoSaver;
-import java.io.IOException;
 
 @Controller
 @RequestMapping("/posts")
@@ -18,8 +17,8 @@ public class PostController {
     private PostService postService;
 
     @GetMapping
-    public String getAllPosts(Model model, @SessionAttribute User user) {
-        model.addAttribute("carPosts", postService.findALlCarPosts(user.getId()));
+    public String getAllPosts(Model model) {
+        model.addAttribute("carPosts", postService.findALlCarPosts());
         return "posts/list";
     }
 
@@ -31,7 +30,7 @@ public class PostController {
 
     @PostMapping("/create")
     public String createCarPost(@ModelAttribute("carPost") CarPost carPost, @RequestParam MultipartFile file,
-                                @SessionAttribute User user, Model model) throws IOException {
+                                @SessionAttribute User user, Model model) {
         try {
             PhotoSaver.savePhoto(file);
             carPost.setPhotoPath(file.getOriginalFilename());

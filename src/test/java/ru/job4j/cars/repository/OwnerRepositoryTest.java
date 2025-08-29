@@ -6,16 +6,21 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.job4j.cars.configuration.HibernateConfiguration;
 import ru.job4j.cars.model.Owner;
+import ru.job4j.cars.model.User;
 
 import java.util.List;
 import java.util.Optional;
 
 class OwnerRepositoryTest {
     private OwnerRepository ownerRepository;
+    private UserRepository userRepository;
 
     @BeforeEach
     void beforeEach() {
         ownerRepository = new OwnerRepository(
+                new CrudRepository(
+                        new HibernateConfiguration().sf()));
+        userRepository = new UserRepository(
                 new CrudRepository(
                         new HibernateConfiguration().sf()));
     }
@@ -123,6 +128,36 @@ class OwnerRepositoryTest {
         ownerRepository.create(owner2);
         ownerRepository.create(owner3);
         Optional<Owner> result = ownerRepository.findByName("Ivan");
+        assertThat(result).isEmpty();
+    }
+
+    @Test
+    void whenFindByUserId1ThenDbHasElement() {
+        User user = new User();
+        user.setId(1);
+        user = userRepository.create(user);
+
+        Owner owner1 = new Owner("Aleks", user);
+        Owner owner2 = new Owner("Aleksandr", user);
+        Owner owner3 = new Owner("Aleksey", null);
+        ownerRepository.create(owner1);
+        ownerRepository.create(owner2);
+        ownerRepository.create(owner3);
+        Optional<Owner> result = ownerRepository.findByUserId(1);
+        assertThat(result).isPresent()
+                .get()
+                .isEqualTo(owner1);
+    }
+
+    @Test
+    void whenFindByUserId1000ThenDbHasNoSuchElements() {
+        Owner owner1 = new Owner("Aleks", null);
+        Owner owner2 = new Owner("Aleksandr", null);
+        Owner owner3 = new Owner("Aleksey", null);
+        ownerRepository.create(owner1);
+        ownerRepository.create(owner2);
+        ownerRepository.create(owner3);
+        Optional<Owner> result = ownerRepository.findByUserId(1000);
         assertThat(result).isEmpty();
     }
 }

@@ -92,9 +92,10 @@ public class OwnerRepository {
      * @return Optional of owner.
      */
     public Optional<Owner> findByUserId(int userId) {
-        return crudRepository.optional(
+        List<Owner> ownerList = crudRepository.query(
                 "from Owner where user.id = :userId", Owner.class,
                 Map.of("userId", userId)
         );
+        return ownerList.stream().findFirst();
     }
 }

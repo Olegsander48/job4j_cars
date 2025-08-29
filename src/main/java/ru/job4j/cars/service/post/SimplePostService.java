@@ -103,7 +103,7 @@ public class SimplePostService implements PostService {
     }
 
     @Override
-    public List<CarPost> findALlCarPosts(int userId) {
+    public List<CarPost> findALlCarPosts() {
         return postRepository.findAllOrderById().stream()
                 .map(post -> new CarPost(
                         post.getId(),
@@ -114,7 +114,7 @@ public class SimplePostService implements PostService {
                                 .getAfter(),
                         post.getPhotoPath(),
                         post.getDescription(),
-                        userId,
+                        post.getUser().getId(),
                         post.getCreated()))
                 .toList();
     }

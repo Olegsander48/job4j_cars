@@ -19,7 +19,7 @@ public interface PostService extends CrudService<Post> {
 
     List<Post> findByCarBrand(String brand);
 
-    List<CarPost> findALlCarPosts(int userId);
+    List<CarPost> findALlCarPosts();
 
     @Transactional
     void saveCarPost(CarPost carPost);
