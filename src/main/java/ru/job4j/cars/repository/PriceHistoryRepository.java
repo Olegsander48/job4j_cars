@@ -33,12 +33,12 @@ public class PriceHistoryRepository {
 
     /**
      * Удалить историю изменения по id.
-     * @param priceHistoryId ID
+     * @param id ID of PriceHistory
      */
-    public void delete(int priceHistoryId) {
+    public void delete(int id) {
         crudRepository.run(
-                "delete from PriceHistory where id = :priceHistoryId",
-                Map.of("priceHistoryId", priceHistoryId)
+                "delete from PriceHistory where id = :id",
+                Map.of("id", id)
         );
     }
 
@@ -72,5 +72,16 @@ public class PriceHistoryRepository {
                 "from PriceHistory ph where ph.post.id = :fPostId order by created desc", PriceHistory.class,
                 Map.of("fPostId", postId));
         return priceHistoryList.stream().findFirst();
+    }
+
+    /**
+     * Удалить историю изменения по post id.
+     * @param postId ID of post
+     */
+    public void deleteByPostId(int postId) {
+        crudRepository.run(
+                "delete from PriceHistory where post_id = :postId",
+                Map.of("postId", postId)
+        );
     }
 }

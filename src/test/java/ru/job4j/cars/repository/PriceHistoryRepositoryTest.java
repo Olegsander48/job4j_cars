@@ -103,4 +103,48 @@ class PriceHistoryRepositoryTest {
                 .isEqualTo(priceHistory2);
     }
 
+    @Test
+    void whenDeleteByPostIdThenDbEmpty() {
+        Post post = new Post("test post");
+        postRepository.create(post);
+
+        PriceHistory priceHistory1 = new PriceHistory(1200, 1500, LocalDateTime.of(2020, 1, 1, 1, 1));
+        PriceHistory priceHistory2 = new PriceHistory(1800, 2500, LocalDateTime.of(2023, 1, 1, 1, 1));
+        PriceHistory priceHistory3 = new PriceHistory(5200, 6500, LocalDateTime.of(2021, 1, 1, 1, 1));
+
+        priceHistory1.setPost(post);
+        priceHistory2.setPost(post);
+        priceHistory3.setPost(post);
+
+        priceHistoryRepository.create(priceHistory1);
+        priceHistoryRepository.create(priceHistory2);
+        priceHistoryRepository.create(priceHistory3);
+        priceHistoryRepository.deleteByPostId(post.getId());
+        List<PriceHistory> result = priceHistoryRepository.findAllOrderById();
+        assertThat(result).isEmpty();
+    }
+
+    @Test
+    void whenDeleteByPostId200ThenDbNotEmpty() {
+        Post post = new Post("test post");
+        postRepository.create(post);
+
+        PriceHistory priceHistory1 = new PriceHistory(1200, 1500, LocalDateTime.of(2020, 1, 1, 1, 1));
+        PriceHistory priceHistory2 = new PriceHistory(1800, 2500, LocalDateTime.of(2023, 1, 1, 1, 1));
+        PriceHistory priceHistory3 = new PriceHistory(5200, 6500, LocalDateTime.of(2021, 1, 1, 1, 1));
+
+        priceHistory1.setPost(post);
+        priceHistory2.setPost(post);
+        priceHistory3.setPost(post);
+
+        priceHistoryRepository.create(priceHistory1);
+        priceHistoryRepository.create(priceHistory2);
+        priceHistoryRepository.create(priceHistory3);
+        priceHistoryRepository.deleteByPostId(200);
+        List<PriceHistory> result = priceHistoryRepository.findAllOrderById();
+        assertThat(result).isNotEmpty()
+                .hasSize(3)
+                .containsOnly(priceHistory1, priceHistory2, priceHistory3);
+    }
+
 }

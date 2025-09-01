@@ -2,7 +2,6 @@ package ru.job4j.cars.service.post;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.job4j.cars.dto.CarPost;
 import ru.job4j.cars.model.*;
 import ru.job4j.cars.repository.*;
 
@@ -13,11 +12,6 @@ import java.util.*;
 @AllArgsConstructor
 public class SimplePostService implements PostService {
     private PostRepository postRepository;
-    private CarRepository carRepository;
-    private EngineRepository engineRepository;
-    private OwnerRepository ownerRepository;
-    private UserRepository userRepository;
-    private PriceHistoryRepository priceHistoryRepository;
 
     @Override
     @Transactional
@@ -100,44 +94,5 @@ public class SimplePostService implements PostService {
             throw new IllegalArgumentException("brand cannot be null/empty");
         }
         return postRepository.findByCarBrand(brand.toLowerCase().trim());
-    }
-
-    @Override
-    public List<CarPost> findALlCarPosts() {
-        return postRepository.findAllOrderById().stream()
-                .map(post -> new CarPost(
-                        post.getId(),
-                        post.getCar().getName(),
-                        post.getCar().getEngine().getName(),
-                        priceHistoryRepository.findNewestByCarId(post.getId())
-                                .orElseThrow(NoSuchElementException::new)
-                                .getAfter(),
-                        post.getPhotoPath(),
-                        post.getDescription(),
-                        post.getUser().getId(),
-                        post.getCreated()))
-                .toList();
-    }
-
-    @Transactional
-    @Override
-    public void saveCarPost(CarPost carPost) {
-        User user = userRepository.findById(carPost.getUserId()).orElseThrow(NoSuchElementException::new);
-        Owner owner = ownerRepository.findByUserId(user.getId())
-                .orElseGet(() -> ownerRepository.create(new Owner(user.getName(), user)));
-        Engine engine = engineRepository.findByName(carPost.getEngine())
-                .orElseGet(() -> engineRepository.create(new Engine(carPost.getEngine())));
-
-        Car car = carRepository.create(new Car(carPost.getModel(), engine, owner, new HashSet<>(List.of(owner))));
-        Post post = postRepository.create(new Post(
-                carPost.getDescription(),
-                carPost.getCreated(),
-                carPost.getPhotoPath(),
-                user,
-                new ArrayList<>(),
-                car));
-        PriceHistory priceHistory = priceHistoryRepository.create(
-                new PriceHistory(carPost.getPrice(), carPost.getPrice(), carPost.getCreated(), post));
-        post.getPriceHistory().add(priceHistory);
     }
 }

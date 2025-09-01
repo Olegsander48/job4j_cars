@@ -10,9 +10,7 @@
                 <td>
                     <div class="row">
                         <div class="col-5">
-                            <div class="mb-3">
-                                <a th:href="@{/posts/info}"><img th:src="@{/files/{fileName}(fileName=*{carPost.photoPath})}" class="w-100" alt="No image"></a>
-                            </div>
+                            <a th:href="@{/posts/info/{id}(id=*{carPost.id})}"><img th:src="@{/uploads/{fileName}(fileName=*{carPost.photoPath})}" class="w-100" alt="No image"></a>
                         </div>
                         <div class="col-7">
                             <div class="row">

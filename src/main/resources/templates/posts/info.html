@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{fragments/header :: header}"></head>
+<body>
+<div class="container">
+    <div class="row mt-3">
+        <div class="col-5">
+            <a th:href="@{/posts/info/{id}(id=*{carPost.id})}"><img th:src="@{/uploads/{fileName}(fileName=*{carPost.photoPath})}" class="w-100" alt="No image"></a>
+        </div>
+        <div class="col-7">
+            <div class="row">
+                <div class="col-3">
+                    <label class="form-label"><b>Модель:</b></label>
+                </div>
+                <div class="col-9">
+                    <p th:text="${carPost.model}"></p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <label class="form-label"><b>Двигатель:</b></label>
+                </div>
+                <div class="col-9">
+                    <p th:text="${carPost.engine}"/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <label class="form-label"><b>Цена:</b></label>
+                </div>
+                <div class="col-9">
+                    <p th:text="${carPost.price}"/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <label class="form-label"><b>Описание:</b></label>
+                </div>
+                <div class="col-9">
+                    <p th:text="${carPost.description}"/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <label class="form-label"><b>Опубликовано:</b></label>
+                </div>
+                <div class="col-9">
+                    <p th:text="${carPost.getFormattedCreationDate()}"/>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-4">
+            <div class="row">
+                <div class="col-2"></div>
+                <div class="col-8">
+                    <a class="btn btn-success w-100"
+                       th:href="@{/posts/edit{id}(id=${carPost.id})}">Редактировать</a></div>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="row">
+                <div class="col-2"></div>
+                <div class="col-8">
+                    <a class="btn btn-danger w-100"
+                       th:href="@{/posts/delete/{id}(id=${carPost.id}, photoPath = ${carPost.photoPath})}">Удалить</a></div>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="row">
+                <div class="col-2"></div>
+                <div class="col-8">
+                    <button class="btn btn-info w-100" onclick="history.back()">Назад</button></div>
+            </div>
+        </div>
+    </div>
+</div>
+<footer th:insert="~{fragments/footer :: footer}"></footer>
+</body>
+</html>

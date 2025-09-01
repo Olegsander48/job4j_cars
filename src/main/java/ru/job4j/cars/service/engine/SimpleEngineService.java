@@ -21,10 +21,8 @@ public class SimpleEngineService implements EngineService {
         if (entity == null) {
             throw new IllegalArgumentException("Engine cannot be null");
         }
-        if (findByName(entity.getName()).isPresent()) {
-            throw new IllegalArgumentException("Engine already exists");
-        }
-        return engineRepository.create(entity);
+        Optional<Engine> engine = findByName(entity.getName());
+        return engine.orElseGet(() -> engineRepository.create(entity));
     }
 
     @Override

@@ -21,10 +21,8 @@ public class SimpleOwnerService implements OwnerService {
         if (entity == null) {
             throw new IllegalArgumentException("Owner cannot be null");
         }
-        if (findByName(entity.getName()).isPresent()) {
-            throw new IllegalArgumentException("Owner already exists");
-        }
-        return ownerRepository.create(entity);
+        Optional<Owner> owner = findByName(entity.getName());
+        return owner.orElseGet(() -> ownerRepository.create(entity));
     }
 
     @Override
