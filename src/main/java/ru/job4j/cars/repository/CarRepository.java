@@ -33,12 +33,12 @@ public class CarRepository {
 
     /**
      * Удалить автомобиль по id.
-     * @param carId ID
+     * @param id ID
      */
-    public void delete(int carId) {
+    public void delete(int id) {
         crudRepository.run(
                 "delete from Car where id = :fId",
-                Map.of("fId", carId)
+                Map.of("fId", id)
         );
     }
 
@@ -63,26 +63,30 @@ public class CarRepository {
     }
 
     /**
-     * Список автомобилей по name LIKE %key%
-     * @param name имя
+     * Найти автомобиль по бренду и модели, схожими переданным параметрам
+     * @param brand бренд автомобиля
+     * @param model модель автомобиля
      * @return список автомобилей.
      */
-    public List<Car> findByLikeName(String name) {
+    public List<Car> findByLikeBrandAndModel(String brand, String model) {
         return crudRepository.query(
-                "from Car where name like :fName", Car.class,
-                Map.of("fName", "%" + name + "%")
+                "from Car c where LOWER(c.brand) LIKE :fBrand AND LOWER(c.model) LIKE :fModel", Car.class,
+                Map.of("fBrand", "%" + brand.toLowerCase().trim() + "%",
+                        "fModel", "%" + model.toLowerCase().trim() + "%")
         );
     }
 
     /**
-     * Найти автомобиль по name.
-     * @param name модель автомобиля.
+     * Найти автомобиль по бренду и модели.
+     * @param brand бренд автомобиля
+     * @param model модель автомобиля
      * @return Optional of car.
      */
-    public Optional<Car> findByName(String name) {
+    public Optional<Car> findByBrandAndModel(String brand, String model) {
         return crudRepository.optional(
-                "from Car where name = :fName", Car.class,
-                Map.of("fName", name)
+                "from Car c where LOWER(c.brand) = :fBrand AND LOWER(c.model) = :fModel", Car.class,
+                Map.of("fBrand", brand.toLowerCase().trim(),
+                        "fModel", model.toLowerCase().trim())
         );
     }
 }

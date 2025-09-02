@@ -111,7 +111,7 @@ public class PostRepository {
      */
     public List<Post> findByCarBrand(String brand) {
         return crudRepository.query(
-                "from Post p JOIN FETCH p.car where name LIKE :carName", Post.class,
-                Map.of("carName", "%" + brand + "%"));
+                "from Post p JOIN FETCH p.car where brand LIKE :fBrand", Post.class,
+                Map.of("fBrand", "%" + brand + "%"));
     }
 }

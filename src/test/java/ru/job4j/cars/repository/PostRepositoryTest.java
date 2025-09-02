@@ -191,9 +191,9 @@ class PostRepositoryTest {
 
     @Test
     void whenFindByCarBrandMercedesThenDbHasOnePost() {
-        Car car1 = new Car("Mercedes", null, null, null);
-        Car car2 = new Car("BMW", null, null, null);
-        Car car3 = new Car("Audi", null, null, null);
+        Car car1 = new Car("Mercedes", "CLS 63", null, null, null, null);
+        Car car2 = new Car("BMW", "M5", null, null, null, null);
+        Car car3 = new Car("Audi", "RS6", null, null, null, null);
         carRepository.create(car1);
         carRepository.create(car2);
         carRepository.create(car3);
@@ -216,9 +216,9 @@ class PostRepositoryTest {
 
     @Test
     void whenFindByCarBrandOpelThenDbHasNoSuchElements() {
-        Car car1 = new Car("Mercedes", null, null, null);
-        Car car2 = new Car("BMW", null, null, null);
-        Car car3 = new Car("Audi", null, null, null);
+        Car car1 = new Car("Mercedes", "CLS 63", null, null, null, null);
+        Car car2 = new Car("BMW", "M5", null, null, null, null);
+        Car car3 = new Car("Audi", "RS6", null, null, null, null);
         carRepository.create(car1);
         carRepository.create(car2);
         carRepository.create(car3);

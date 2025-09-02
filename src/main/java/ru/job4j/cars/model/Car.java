@@ -16,7 +16,8 @@ public class Car {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String name;
+    private String brand;
+    private String model;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "engine_id", foreignKey = @ForeignKey(name = "ENGINE_ID_FK"))
@@ -33,10 +34,15 @@ public class Car {
                     @JoinColumn(name = "owner_id", nullable = false, updatable = false)})
     private Set<Owner> owners = new HashSet<>();
 
-    public Car(String name, Engine engine, Owner owner, Set<Owner> owners) {
-        this.name = name;
+    @Column(name = "car_body")
+    private CarBody carBody;
+
+    public Car(String brand, String model, Engine engine, Owner owner, Set<Owner> owners, CarBody carBody) {
+        this.brand = brand;
+        this.model = model;
         this.engine = engine;
         this.owner = owner;
         this.owners = owners;
+        this.carBody = carBody;
     }
 }

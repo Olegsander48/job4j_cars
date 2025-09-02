@@ -22,43 +22,45 @@ class CarRepositoryTest {
 
     @Test
     void whenCreateCarThenDbHasSameCar() {
-        Car car = new Car("Mercedes", null, null, null);
+        Car car = new Car("Mercedes", "CLS 63", null, null, null, null);
         carRepository.create(car);
         Optional<Car> result = carRepository.findById(car.getId());
         assertThat(result).isPresent()
-                .map(Car::getName)
-                .hasValue(car.getName());
+                .map(car1 -> car1.getBrand() + car1.getModel())
+                .hasValue(car.getBrand() + car.getModel());
     }
 
     @Test
     void whenAdd3CarsThenDbHas3Cars() {
-        Car car1 = new Car("Mercedes", null, null, null);
-        Car car2 = new Car("BMW", null, null, null);
-        Car car3 = new Car("Audi", null, null, null);
+        Car car1 = new Car("Mercedes", "CLS 63", null, null, null, null);
+        Car car2 = new Car("BMW", "M5", null, null, null, null);
+        Car car3 = new Car("Audi", "RS6", null, null, null, null);
         carRepository.create(car1);
         carRepository.create(car2);
         carRepository.create(car3);
         List<Car> result = carRepository.findAllOrderById();
         assertThat(result).hasSize(3)
-                .extracting(Car::getName)
-                .containsExactlyInAnyOrder(car1.getName(), car2.getName(), car3.getName());
+                .extracting(car -> car.getBrand() + car.getModel())
+                .containsExactly(car1.getBrand() + car1.getModel(),
+                        car2.getBrand() + car2.getModel(),
+                        car3.getBrand() + car3.getModel());
     }
 
     @Test
     void whenUpdateCarThenDbHasSameCar() {
-        Car car = new Car("Mercedes", null, null, null);
+        Car car = new Car("Mercedes", "CLS 63", null, null, null, null);
         carRepository.create(car);
-        car.setName("Mercedes-Benz cls550");
+        car.setModel("s500");
         carRepository.update(car);
         Optional<Car> result = carRepository.findById(car.getId());
         assertThat(result).isPresent()
-                .map(Car::getName)
-                .hasValue(car.getName());
+                .map(car1 -> car1.getBrand() + car1.getModel())
+                .hasValue(car.getBrand() + car.getModel());
     }
 
     @Test
     void whenDeleteCarThenDbEmpty() {
-        Car car = new Car("Mercedes", null, null, null);
+        Car car = new Car("Mercedes", "CLS 63", null, null, null, null);
         carRepository.create(car);
         carRepository.delete(car.getId());
         List<Car> result = carRepository.findAllOrderById();
@@ -67,62 +69,62 @@ class CarRepositoryTest {
 
     @Test
     void whenDeleteCarByNotExistingIdThenDbNotEmpty() {
-        Car car = new Car(1, "Mercedes", null, null, null);
+        Car car = new Car(1, "Mercedes", "CLS 63", null, null, null, null);
         carRepository.create(car);
         carRepository.delete(222);
         List<Car> result = carRepository.findAllOrderById();
         assertThat(result).isNotEmpty()
                 .hasSize(1)
-                .map(Car::getName)
-                .containsExactly(car.getName());
+                .map(car1 -> car1.getBrand() + car1.getModel())
+                .containsExactly(car.getBrand() + car.getModel());
     }
 
     @Test
-    void whenFindByNameLikeMercedesThenDbHasTwoCar() {
-        Car car1 = new Car("Mercedes-Benz cls550", null, null, null);
-        Car car2 = new Car("Mercedes G63", null, null, null);
+    void whenFindByBrandLikeMercedesAndModelLikeClsThenDbHasTwoCars() {
+        Car car1 = new Car("Mercedes", "CLS 63s", null, null, null, null);
+        Car car2 = new Car("Mercedes", "cls550 usa", null, null, null, null);
         carRepository.create(car1);
         carRepository.create(car2);
-        List<Car> result = carRepository.findByLikeName("Mercedes");
+        List<Car> result = carRepository.findByLikeBrandAndModel("Mercedes", "cls");
         assertThat(result).isNotEmpty()
                 .hasSize(2)
-                .extracting(Car::getName)
-                .contains(car1.getName(), car2.getName());
+                .extracting(car -> car.getBrand() + car.getModel())
+                .containsExactly(car1.getBrand() + car1.getModel(), car2.getBrand() + car2.getModel());
     }
 
     @Test
-    void whenFindByNameLikeBMWThenDbHasNoSuchElements() {
-        Car car1 = new Car("Mercedes-Benz cls550", null, null, null);
-        Car car2 = new Car("Mercedes G63", null, null, null);
+    void whenFindByBrandLikeOpelAndModelLikeAstraThenDbHasNoSuchElements() {
+        Car car1 = new Car("Mercedes", "CLS 63s", null, null, null, null);
+        Car car2 = new Car("Mercedes", "cls550 usa", null, null, null, null);
         carRepository.create(car1);
         carRepository.create(car2);
-        List<Car> result = carRepository.findByLikeName("BMW");
+        List<Car> result = carRepository.findByLikeBrandAndModel("Opel", "astra");
         assertThat(result).isEmpty();
     }
 
     @Test
-    void whenFindByNameMercedesThenDbHasCar() {
-        Car car1 = new Car("Audi A8", null, null, null);
-        Car car2 = new Car("Mercedes", null, null, null);
-        Car car3 = new Car("BMW m5", null, null, null);
+    void whenFindByBrandMercedesAndModelGleThenDbHasCar() {
+        Car car1 = new Car("Mercedes", "GLE", null, null, null, null);
+        Car car2 = new Car("BMW", "M5", null, null, null, null);
+        Car car3 = new Car("Audi", "RS6", null, null, null, null);
         carRepository.create(car1);
         carRepository.create(car2);
         carRepository.create(car3);
-        Optional<Car> result = carRepository.findByName("Mercedes");
+        Optional<Car> result = carRepository.findByBrandAndModel("mercedes", "gle");
         assertThat(result).isPresent()
-                .map(Car::getName)
-                .hasValue(car2.getName());
+                .map(car -> car.getBrand() + car.getModel())
+                .hasValue(car1.getBrand() + car1.getModel());
     }
 
     @Test
-    void whenFindByNameOpelThenDbHasNoSuchElements() {
-        Car car1 = new Car("Audi A8", null, null, null);
-        Car car2 = new Car("Mercedes G63", null, null, null);
-        Car car3 = new Car("BMW m5", null, null, null);
+    void whenFindByBranMercedesAndModelEqsThenDbHasNoSuchElements() {
+        Car car1 = new Car("Mercedes", "GLE", null, null, null, null);
+        Car car2 = new Car("BMW", "M5", null, null, null, null);
+        Car car3 = new Car("Audi", "RS6", null, null, null, null);
         carRepository.create(car1);
         carRepository.create(car2);
         carRepository.create(car3);
-        Optional<Car> result = carRepository.findByName("Opel");
+        Optional<Car> result = carRepository.findByBrandAndModel("Mercedes", "eqs");
         assertThat(result).isEmpty();
     }
 }

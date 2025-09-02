@@ -2,6 +2,7 @@ package ru.job4j.cars.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import ru.job4j.cars.model.CarBody;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -10,12 +11,14 @@ import java.time.format.DateTimeFormatter;
 @AllArgsConstructor
 public class CarPost {
     private int id;
+    private String brand;
     private String model;
     private String engine;
     private long price;
     private String photoPath;
     private String description;
     private int userId;
+    private CarBody carBody;
     private LocalDateTime created;
 
     public CarPost() {

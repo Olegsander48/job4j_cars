@@ -12,41 +12,64 @@
                 </div>
             </div>
             <div class="col-7">
-                <div class="row">
+                <div class="row mb-1">
+                    <div class="col-3">
+                        <label for="brand" class="form-label "><b>Бренд:</b></label>
+                    </div>
+                    <div class="col-9">
+                        <input class="form-control" type="text" id="brand" name="brand" th:field="${carPost.brand}" required
+                               placeholder="Mercedes">
+                    </div>
+                </div>
+                <div class="row mb-1">
                     <div class="col-3">
                         <label for="model" class="form-label "><b>Модель:</b></label>
                     </div>
                     <div class="col-9">
-                        <input type="text" id="model" name="model" th:field="${carPost.model}" required
-                               placeholder="Mercedes e250cdi">
+                        <input class="form-control" type="text" id="model" name="model" th:field="${carPost.model}" required
+                               placeholder="e250cdi">
                     </div>
                 </div>
-                <div class="row">
+                <div class="row mb-1">
                     <div class="col-3">
                         <label for="engine" class="form-label"><b>Двигатель:</b></label>
                     </div>
                     <div class="col-9">
-                        <input type="text" id="engine" name="engine" th:field="${carPost.engine}" required
+                        <input class="form-control" type="text" id="engine" name="engine" th:field="${carPost.engine}" required
                                placeholder="2.2 i4 cdi">
                     </div>
                 </div>
-                <div class="row">
+                <div class="row mb-1">
                     <div class="col-3">
                         <label for="price" class="form-label"><b>Цена:</b></label>
                     </div>
                     <div class="col-9">
-                        <input type="number" id="price" name="price" th:field="${carPost.price}" required
+                        <input class="form-control" type="number" id="price" name="price" th:field="${carPost.price}" required
                                placeholder="12300" min="1">
                     </div>
                 </div>
-                <div class="row">
+                <div class="row mb-1">
                     <div class="col-3">
                         <label for="description" class="form-label"><b>Описание:</b></label>
                     </div>
                     <div class="col-9">
-                        <input type="text" id="description" name="description" th:field="${carPost.description}"
+                        <textarea class="form-control" type="text" id="description" name="description" th:field="${carPost.description}"
                                required
-                               placeholder="Автомобиль в хорошем состоянии, 2 владелец. Техосмотр пройден, новая резина">
+                               placeholder="Автомобиль в хорошем состоянии, 2 владелеца. Обслуживался у официального диллера">
+                        </textarea>
+                    </div>
+                </div>
+                <div class="row mb-1">
+                    <div class="col-3">
+                        <label for="carBody" class="form-label "><b>Тип кузова:</b></label>
+                    </div>
+                    <div class="col-9">
+                        <select class="form-control" id="carBody" name="carBody" th:field="${carPost.carBody}">
+                            <option th:each="body : ${T(ru.job4j.cars.model.CarBody).values()}"
+                                    th:value="${body}"
+                                    th:text="${body.name().toLowerCase()}">
+                            </option>
+                        </select>
                     </div>
                 </div>
             </div>

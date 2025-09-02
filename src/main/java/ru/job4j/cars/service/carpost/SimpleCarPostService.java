@@ -28,7 +28,12 @@ public class SimpleCarPostService implements CarPostService {
         Engine engine = engineRepository.findByName(carPost.getEngine())
                 .orElseGet(() -> engineRepository.create(new Engine(carPost.getEngine())));
 
-        Car car = carRepository.create(new Car(carPost.getModel(), engine, owner, new HashSet<>(List.of(owner))));
+        Car car = carRepository.create(new Car(carPost.getBrand(),
+                                                carPost.getModel(),
+                                                engine,
+                                                owner,
+                                                new HashSet<>(List.of(owner)),
+                                                carPost.getCarBody()));
         Post post = postRepository.create(new Post(
                 carPost.getDescription(),
                 carPost.getCreated(),
@@ -56,7 +61,7 @@ public class SimpleCarPostService implements CarPostService {
         }
         priceHistoryRepository.deleteByPostId(id);
         postRepository.delete(id);
-        Optional<Car> carOptional = carRepository.findByName(carPost.get().getModel());
+        Optional<Car> carOptional = carRepository.findByBrandAndModel(carPost.get().getBrand(), carPost.get().getModel());
         carOptional.ifPresent(car -> carRepository.delete(car.getId()));
     }
 
@@ -74,7 +79,8 @@ public class SimpleCarPostService implements CarPostService {
         return postRepository.findAllOrderById().stream()
                 .map(post -> new CarPost(
                         post.getId(),
-                        post.getCar().getName(),
+                        post.getCar().getBrand(),
+                        post.getCar().getModel(),
                         post.getCar().getEngine().getName(),
                         priceHistoryRepository.findNewestByCarId(post.getId())
                                 .orElseThrow(NoSuchElementException::new)
@@ -82,6 +88,7 @@ public class SimpleCarPostService implements CarPostService {
                         post.getPhotoPath(),
                         post.getDescription(),
                         post.getUser().getId(),
+                        post.getCar().getCarBody(),
                         post.getCreated()))
                 .toList();
     }

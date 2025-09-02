@@ -16,13 +16,9 @@ public class SimpleCarService implements CarService {
     private CarRepository carRepository;
 
     @Override
-    @Transactional
     public Car create(Car entity) {
         if (entity == null) {
             throw new IllegalArgumentException("Car cannot be null");
-        }
-        if (findByName(entity.getName()).isPresent()) {
-            throw new IllegalArgumentException("Car already exists");
         }
         return carRepository.create(entity);
     }
@@ -33,7 +29,7 @@ public class SimpleCarService implements CarService {
         if (entity == null) {
             throw new IllegalArgumentException("Car cannot be null");
         }
-        if (findByName(entity.getName()).isEmpty()) {
+        if (findByBrandAndModel(entity.getBrand(), entity.getModel()).isEmpty()) {
             throw new NoSuchElementException("Car does not exist");
         }
         carRepository.update(entity);
@@ -65,18 +61,24 @@ public class SimpleCarService implements CarService {
     }
 
     @Override
-    public List<Car> findByLikeName(String name) {
-        if (name == null || name.isBlank()) {
-            throw new IllegalArgumentException("Name cannot be null/empty");
+    public List<Car> findByLikeBrandAndModel(String brand, String model) {
+        if (brand == null || brand.isBlank()) {
+            throw new IllegalArgumentException("Brand cannot be null/empty");
         }
-        return carRepository.findByLikeName(name.toLowerCase().trim());
+        if (model == null || model.isBlank()) {
+            throw new IllegalArgumentException("Model cannot be null/empty");
+        }
+        return carRepository.findByLikeBrandAndModel(brand, model);
     }
 
     @Override
-    public Optional<Car> findByName(String name) {
-        if (name == null || name.isBlank()) {
-            throw new IllegalArgumentException("Name cannot be null/empty");
+    public Optional<Car> findByBrandAndModel(String brand, String model) {
+        if (brand == null || brand.isBlank()) {
+            throw new IllegalArgumentException("Brand cannot be null/empty");
         }
-        return carRepository.findByName(name.toLowerCase().trim());
+        if (model == null || model.isBlank()) {
+            throw new IllegalArgumentException("Model cannot be null/empty");
+        }
+        return carRepository.findByBrandAndModel(brand, model);
     }
 }
