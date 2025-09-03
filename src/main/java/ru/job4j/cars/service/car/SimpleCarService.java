@@ -81,4 +81,9 @@ public class SimpleCarService implements CarService {
         }
         return carRepository.findByBrandAndModel(brand, model);
     }
+
+    @Override
+    public List<String> findAllCarBrands() {
+        return carRepository.findAllCarBrands();
+    }
 }

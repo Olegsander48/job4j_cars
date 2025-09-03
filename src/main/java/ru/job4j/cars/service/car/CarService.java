@@ -10,4 +10,6 @@ public interface CarService extends CrudService<Car> {
     List<Car> findByLikeBrandAndModel(String brand, String model);
 
     Optional<Car> findByBrandAndModel(String brand, String model);
+
+    List<String> findAllCarBrands();
 }

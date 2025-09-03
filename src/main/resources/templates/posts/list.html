@@ -6,11 +6,15 @@
     <div class="row">
         <table class="table m-0">
             <tbody>
-            <tr th:each="carPost: ${carPosts}">
+            <tr th:each="carPost : ${carPosts}"
+                th:attr="data-status=${carPost.brand}">
                 <td>
                     <div class="row">
+
                         <div class="col-5">
-                            <a th:href="@{/posts/info/{id}(id=*{carPost.id})}"><img th:src="@{/uploads/{fileName}(fileName=*{carPost.photoPath})}" class="w-100" alt="No image"></a>
+                            <a th:href="@{/posts/info/{id}(id=*{carPost.id})}"><img
+                                    th:src="@{/uploads/{fileName}(fileName=*{carPost.photoPath})}" class="w-100"
+                                    alt="No image"></a>
                         </div>
                         <div class="col-7">
                             <div class="row">
@@ -63,7 +67,9 @@
                             </div>
                             <div class="row">
                                 <div class="col-6">
-                                    <a th:href="@{/posts/info/{postId}(postId=${carPost.id})}" > <button type="button" class="btn btn-warning">Больше информации</button> </a>
+                                    <a th:href="@{/posts/info/{postId}(postId=${carPost.id})}">
+                                        <button type="button" class="btn btn-warning">Больше информации</button>
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -75,7 +81,29 @@
     </div>
     <hr>
     <div class="row">
-        <div class="col-6"></div>
+        <div class="col-6 row">
+            <div class="col-3"></div>
+            <div class="col-5 dropdown">
+                <button id="filterDropdownBtn" class="btn btn-secondary dropdown-toggle" role="button"
+                        data-toggle="dropdown" aria-expanded="false">
+                    Марка: любая
+                </button>
+                <ul class="dropdown-menu">
+                    <li>
+                        <a class="dropdown-item" href="#"
+                           data-status="any" data-label="любая">
+                            Любая
+                        </a>
+                    </li>
+                    <li th:each="carBrand : ${carBrands}">
+                        <a class="dropdown-item" href="#"
+                           th:attr="data-status=${carBrand}, data-label=${carBrand}"
+                           th:text="${carBrand}">
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
         <div class="col-6">
             <div class="row">
                 <div class="col-6"></div>
@@ -87,5 +115,33 @@
     </div>
 </div>
 <footer th:insert="~{fragments/footer :: footer}"></footer>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        document.querySelectorAll(".dropdown-item").forEach(item => {
+            item.addEventListener("click", event => {
+                event.preventDefault();
+
+                const status = item.dataset.status;
+                const label = item.dataset.label;
+
+                setFilter(status, label);
+            });
+        });
+    });
+
+    function setFilter(status, label) {
+        document.getElementById("filterDropdownBtn").textContent = "Марка: " + label;
+
+        const rows = document.querySelectorAll("tr[data-status]");
+        rows.forEach(row => {
+            if (status === "any" || row.dataset.status === status) {
+                row.style.display = "";
+            } else {
+                row.style.display = "none";
+            }
+        });
+    }
+</script>
 </body>
 </html>

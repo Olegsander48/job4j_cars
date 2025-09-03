@@ -127,4 +127,18 @@ class CarRepositoryTest {
         Optional<Car> result = carRepository.findByBrandAndModel("Mercedes", "eqs");
         assertThat(result).isEmpty();
     }
+
+    @Test
+    void whenFindAllCarBrandsThenDbHasThreeBrands() {
+        Car car1 = new Car("Mercedes", "GLE", null, null, null, null);
+        Car car2 = new Car("BMW", "M5", null, null, null, null);
+        Car car3 = new Car("Audi", "RS6", null, null, null, null);
+        carRepository.create(car1);
+        carRepository.create(car2);
+        carRepository.create(car3);
+        List<String> result = carRepository.findAllCarBrands();
+        assertThat(result).isNotEmpty()
+                .hasSize(3)
+                .containsExactly(car1.getBrand(), car2.getBrand(), car3.getBrand());
+    }
 }

@@ -89,4 +89,13 @@ public class CarRepository {
                         "fModel", model.toLowerCase().trim())
         );
     }
+
+    /**
+     * Найти все бернды автомобилей
+     * @return список брендов в продаже.
+     */
+    public List<String> findAllCarBrands() {
+        return crudRepository.query(
+                "select c.brand from Car c", String.class);
+    }
 }
