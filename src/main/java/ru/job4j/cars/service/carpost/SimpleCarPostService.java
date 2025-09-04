@@ -48,8 +48,39 @@ public class SimpleCarPostService implements CarPostService {
     }
 
     @Override
+    @Transactional
     public void update(CarPost entity) {
+        System.out.println("================= its entity " + entity);
+        Optional<Engine> engine = engineRepository.findById(entity.getEngineId());
+        if (engine.isPresent()) {
+            engine.get().setName(entity.getEngine());
+            engineRepository.update(engine.get());
+        }
 
+        Optional<Post> post = postRepository.findById(entity.getId());
+        if (post.isPresent()) {
+            post.get().setDescription(entity.getDescription());
+            post.get().setPhotoPath(entity.getPhotoPath());
+            postRepository.update(post.get());
+        }
+
+        Optional<Car> carOptional = carRepository.findById(entity.getCarId());
+        if (carOptional.isPresent()) {
+            Car car = carOptional.get();
+            car.setCarBody(entity.getCarBody());
+            car.setModel(entity.getModel());
+            car.setBrand(entity.getBrand());
+            carRepository.update(car);
+        }
+
+        Optional<PriceHistory> priceHistory = priceHistoryRepository.findNewestByCarId(entity.getCarId());
+        if (priceHistory.isPresent() && priceHistory.get().getAfter() != entity.getPrice()) {
+            priceHistoryRepository.create(new PriceHistory(
+                    priceHistory.get().getAfter(),
+                    entity.getPrice(),
+                    entity.getCreated(),
+                    post.get()));
+        }
     }
 
     @Override
@@ -81,6 +112,7 @@ public class SimpleCarPostService implements CarPostService {
                         post.getId(),
                         post.getCar().getBrand(),
                         post.getCar().getModel(),
+                        post.getCar().getEngine().getId(),
                         post.getCar().getEngine().getName(),
                         priceHistoryRepository.findNewestByCarId(post.getId())
                                 .orElseThrow(NoSuchElementException::new)
@@ -88,6 +120,7 @@ public class SimpleCarPostService implements CarPostService {
                         post.getPhotoPath(),
                         post.getDescription(),
                         post.getUser().getId(),
+                        post.getCar().getId(),
                         post.getCar().getCarBody(),
                         post.getCreated()))
                 .toList();

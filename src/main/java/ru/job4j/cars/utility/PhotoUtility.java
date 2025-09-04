@@ -16,9 +16,11 @@ public class PhotoUtility {
 
     public void savePhoto(MultipartFile file) throws IOException, InterruptedException {
         Path filePath = Paths.get(photoPath, file.getOriginalFilename());
-        Files.createDirectories(filePath.getParent());
-        file.transferTo(filePath);
-        Thread.sleep(1);
+        if (!Files.exists(filePath)) {
+            Files.createDirectories(filePath.getParent());
+            file.transferTo(filePath);
+            Thread.sleep(1);
+        }
     }
 
     public void deletePhoto(String photoPath) throws IOException {

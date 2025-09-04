@@ -3,12 +3,17 @@
 <head th:insert="~{fragments/header :: header}"></head>
 <body>
 <div class="container">
-    <form class="mt-3" th:action="@{/posts/create}" method="post" enctype="multipart/form-data">
+    <form class="mt-3" th:action="@{/posts/edit}" method="post" enctype="multipart/form-data">
         <div class="row">
+            <input type="hidden" name="id" th:field="${carPost.id}" />
+            <input type="hidden" name="carId" th:field="${carPost.carId}" />
+            <input type="hidden" name="engineId" th:field="${carPost.engineId}" />
+            <input type="hidden" name="photoPath" th:field="${carPost.photoPath}">
             <div class="col-5">
                 <div class="mb-3">
-                    <input class="form-control" type="file" id="file" name="file" required>
-                    <img class="img-fluid w-100" id="preview" alt="preview">
+                    <input class="form-control" type="file" id="file" name="file">
+                    <img class="img-fluid w-100" id="preview" alt="preview"
+                         th:src="@{/uploads/{fileName}(fileName=${carPost.photoPath})}">
                 </div>
             </div>
             <div class="col-7">
@@ -17,8 +22,7 @@
                         <label for="brand" class="form-label "><b>Бренд:</b></label>
                     </div>
                     <div class="col-9">
-                        <input class="form-control" type="text" id="brand" name="brand" th:field="${carPost.brand}" required
-                               placeholder="Mercedes">
+                        <input class="form-control" type="text" id="brand" name="brand" th:field="${carPost.brand}" required>
                     </div>
                 </div>
                 <div class="row mb-1">
@@ -26,8 +30,7 @@
                         <label for="model" class="form-label "><b>Модель:</b></label>
                     </div>
                     <div class="col-9">
-                        <input class="form-control" type="text" id="model" name="model" th:field="${carPost.model}" required
-                               placeholder="e250cdi">
+                        <input class="form-control" type="text" id="model" name="model" th:field="${carPost.model}" required>
                     </div>
                 </div>
                 <div class="row mb-1">
@@ -35,8 +38,7 @@
                         <label for="engine" class="form-label"><b>Двигатель:</b></label>
                     </div>
                     <div class="col-9">
-                        <input class="form-control" type="text" id="engine" name="engine" th:field="${carPost.engine}" required
-                               placeholder="2.2 i4 cdi">
+                        <input class="form-control" type="text" id="engine" name="engine" th:field="${carPost.engine}" required>
                     </div>
                 </div>
                 <div class="row mb-1">
@@ -44,8 +46,7 @@
                         <label for="price" class="form-label"><b>Цена:</b></label>
                     </div>
                     <div class="col-9">
-                        <input class="form-control" type="number" id="price" name="price" th:field="${carPost.price}" required
-                               placeholder="12300" min="1">
+                        <input class="form-control" type="number" id="price" name="price" th:field="${carPost.price}" required min="1">
                     </div>
                 </div>
                 <div class="row mb-1">
@@ -54,8 +55,7 @@
                     </div>
                     <div class="col-9">
                         <textarea class="form-control" type="text" id="description" name="description" th:field="${carPost.description}"
-                               required
-                               placeholder="Автомобиль в хорошем состоянии, 2 владелеца. Обслуживался у официального диллера">
+                               required>
                         </textarea>
                     </div>
                 </div>
@@ -79,9 +79,12 @@
             <div class="col-6"></div>
             <div class="col-6">
                 <div class="row">
-                    <div class="col-6"></div>
+                    <div class="col-2"></div>
                     <div class="col-5">
-                        <button class="btn btn-info w-100" type="submit">Сохранить</button>
+                        <button class="btn btn-info w-100" type="submit">Обновить</button>
+                    </div>
+                    <div class="col-5">
+                        <input class="btn btn-danger w-100" type="button" value="Назад" onclick="history.back()">
                     </div>
                 </div>
             </div>
@@ -103,5 +106,6 @@
             reader.readAsDataURL(file);
         }
     });
+
 </script>
 </html>

@@ -13,11 +13,13 @@ public class CarPost {
     private int id;
     private String brand;
     private String model;
+    private int engineId;
     private String engine;
     private long price;
     private String photoPath;
     private String description;
     private int userId;
+    private int carId;
     private CarBody carBody;
     private LocalDateTime created;
 

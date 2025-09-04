@@ -69,4 +69,30 @@ public class PostController {
             return "fragments/errors/404";
         }
     }
+
+    @GetMapping("/edit/{id}")
+    public String getEditPage(@PathVariable int id, Model model) {
+        var carPost = carPostService.findById(id);
+        if (carPost.isEmpty()) {
+            model.addAttribute("message", "No car post with id " + id);
+            return "fragments/errors/404";
+        }
+        model.addAttribute("carPost", carPost.get());
+        return "posts/edit";
+    }
+
+    @PostMapping("/edit")
+    public String updatePost(@ModelAttribute CarPost carPost, Model model, @RequestParam("file") MultipartFile file) {
+        try {
+            if (!file.isEmpty()) {
+                photoSaver.savePhoto(file);
+                carPost.setPhotoPath(file.getOriginalFilename());
+            }
+            carPostService.update(carPost);
+            return "redirect:/posts";
+        } catch (Exception exception) {
+            model.addAttribute("message", exception.getMessage());
+            return "fragments/errors/404";
+        }
+    }
 }
