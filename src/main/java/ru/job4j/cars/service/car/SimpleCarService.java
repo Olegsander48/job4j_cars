@@ -13,7 +13,7 @@ import java.util.Optional;
 @Service
 @AllArgsConstructor
 public class SimpleCarService implements CarService {
-    private CarRepository carRepository;
+    private final CarRepository carRepository;
 
     @Override
     public Car create(Car entity) {
@@ -29,7 +29,7 @@ public class SimpleCarService implements CarService {
         if (entity == null) {
             throw new IllegalArgumentException("Car cannot be null");
         }
-        if (findByBrandAndModel(entity.getBrand(), entity.getModel()).isEmpty()) {
+        if (findById(entity.getId()).isEmpty()) {
             throw new NoSuchElementException("Car does not exist");
         }
         carRepository.update(entity);

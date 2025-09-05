@@ -1,8 +1,18 @@
 package ru.job4j.cars.service.carpost;
 
+import org.springframework.web.multipart.MultipartFile;
 import ru.job4j.cars.dto.CarPost;
+import ru.job4j.cars.model.User;
 import ru.job4j.cars.service.CrudService;
 
-public interface CarPostService extends CrudService<CarPost> {
+import java.io.IOException;
 
+public interface CarPostService extends CrudService<CarPost> {
+    void update(CarPost entity, MultipartFile file) throws IOException, InterruptedException;
+
+    void delete(int id, String photoPath) throws IOException;
+
+    CarPost create(CarPost entity, MultipartFile file) throws IOException, InterruptedException;
+
+    boolean checkPermission(int carPostId, User user);
 }

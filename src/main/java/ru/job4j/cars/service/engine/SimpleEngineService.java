@@ -13,7 +13,7 @@ import java.util.Optional;
 @Service
 @AllArgsConstructor
 public class SimpleEngineService implements EngineService {
-    private EngineRepository engineRepository;
+    private final EngineRepository engineRepository;
 
     @Override
     @Transactional
@@ -31,7 +31,7 @@ public class SimpleEngineService implements EngineService {
         if (entity == null) {
             throw new IllegalArgumentException("Engine cannot be null");
         }
-        if (findByName(entity.getName()).isEmpty()) {
+        if (findById(entity.getId()).isEmpty()) {
             throw new NoSuchElementException("Engine does not exist");
         }
         engineRepository.update(entity);

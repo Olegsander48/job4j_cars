@@ -11,7 +11,7 @@ import java.util.*;
 @Service
 @AllArgsConstructor
 public class SimplePostService implements PostService {
-    private PostRepository postRepository;
+    private final PostRepository postRepository;
 
     @Override
     @Transactional
@@ -31,7 +31,7 @@ public class SimplePostService implements PostService {
         if (entity == null) {
             throw new IllegalArgumentException("Post cannot be null");
         }
-        if (findByDescription(entity.getDescription()).isEmpty()) {
+        if (findById(entity.getId()).isEmpty()) {
             throw new NoSuchElementException("Post does not exist");
         }
         postRepository.update(entity);

@@ -13,7 +13,7 @@ import java.util.Optional;
 @Service
 @AllArgsConstructor
 public class SimpleUserService implements UserService {
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     @Override
     @Transactional
@@ -33,7 +33,7 @@ public class SimpleUserService implements UserService {
         if (entity == null) {
             throw new IllegalArgumentException("Entity cannot be null");
         }
-        if (findByLogin(entity.getLogin()).isEmpty()) {
+        if (findById(entity.getId()).isEmpty()) {
             throw new NoSuchElementException("User not found");
         }
         userRepository.update(entity);

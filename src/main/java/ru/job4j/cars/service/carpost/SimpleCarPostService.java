@@ -2,22 +2,26 @@ package ru.job4j.cars.service.carpost;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import ru.job4j.cars.dto.CarPost;
 import ru.job4j.cars.model.*;
 import ru.job4j.cars.repository.*;
+import ru.job4j.cars.utility.PhotoUtility;
 
 import javax.transaction.Transactional;
+import java.io.IOException;
 import java.util.*;
 
 @Service
 @AllArgsConstructor
 public class SimpleCarPostService implements CarPostService {
-    private PostRepository postRepository;
-    private CarRepository carRepository;
-    private EngineRepository engineRepository;
-    private OwnerRepository ownerRepository;
-    private UserRepository userRepository;
-    private PriceHistoryRepository priceHistoryRepository;
+    private final PostRepository postRepository;
+    private final CarRepository carRepository;
+    private final EngineRepository engineRepository;
+    private final OwnerRepository ownerRepository;
+    private final UserRepository userRepository;
+    private final PriceHistoryRepository priceHistoryRepository;
+    private final PhotoUtility photoUtility;
 
     @Override
     @Transactional
@@ -45,6 +49,14 @@ public class SimpleCarPostService implements CarPostService {
                 new PriceHistory(carPost.getPrice(), carPost.getPrice(), carPost.getCreated(), post));
         post.getPriceHistory().add(priceHistory);
         return carPost;
+    }
+
+    @Override
+    @Transactional
+    public CarPost create(CarPost entity, MultipartFile file) throws IOException, InterruptedException {
+        photoUtility.savePhoto(file);
+        entity.setPhotoPath(file.getOriginalFilename());
+        return create(entity);
     }
 
     @Override
@@ -80,6 +92,23 @@ public class SimpleCarPostService implements CarPostService {
                     entity.getCreated(),
                     post.get()));
         }
+    }
+
+    @Override
+    @Transactional
+    public void update(CarPost entity, MultipartFile file) throws IOException, InterruptedException {
+        if (!file.isEmpty()) {
+            photoUtility.savePhoto(file);
+            entity.setPhotoPath(file.getOriginalFilename());
+        }
+        update(entity);
+    }
+
+    @Override
+    @Transactional
+    public void delete(int id, String photoPath) throws IOException {
+        photoUtility.deletePhoto(photoPath);
+        delete(id);
     }
 
     @Override
@@ -123,5 +152,18 @@ public class SimpleCarPostService implements CarPostService {
                         post.getCar().getCarBody(),
                         post.getCreated()))
                 .toList();
+    }
+
+    @Override
+    @Transactional
+    public boolean checkPermission(int carPostId, User user) {
+        Optional<CarPost> carPost = findById(carPostId);
+        if (carPost.isEmpty()) {
+            throw new NoSuchElementException("No car post found with id " + carPostId);
+        }
+        if (user == null) {
+            throw new IllegalArgumentException("Invalid user");
+        }
+        return carPost.get().getUserId() == user.getId();
     }
 }

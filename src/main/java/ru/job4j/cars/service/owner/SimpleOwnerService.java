@@ -13,7 +13,7 @@ import java.util.Optional;
 @Service
 @AllArgsConstructor
 public class SimpleOwnerService implements OwnerService {
-    private OwnerRepository ownerRepository;
+    private final OwnerRepository ownerRepository;
 
     @Override
     @Transactional
@@ -31,7 +31,7 @@ public class SimpleOwnerService implements OwnerService {
         if (entity == null) {
             throw new IllegalArgumentException("Owner cannot be null");
         }
-        if (findByName(entity.getName()).isEmpty()) {
+        if (findById(entity.getId()).isEmpty()) {
             throw new NoSuchElementException("Owner does not exist");
         }
         ownerRepository.update(entity);
