@@ -2,6 +2,7 @@ package ru.job4j.cars.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import ru.job4j.cars.model.CarBody;
 
 import java.time.LocalDateTime;
@@ -21,6 +22,8 @@ public class CarPost {
     private int userId;
     private int carId;
     private CarBody carBody;
+
+    @EqualsAndHashCode.Exclude
     private LocalDateTime created;
 
     public CarPost() {

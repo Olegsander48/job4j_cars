@@ -25,6 +25,9 @@ class OwnerRepositoryTest {
                         new HibernateConfiguration().sf()));
     }
 
+    /**
+     * Test case: When creating an owner, then it can be found in the database with the same name.
+     */
     @Test
     void whenCreateOwnerThenDbHasSameOwner() {
         Owner owner = new Owner("Aleks", null);
@@ -35,6 +38,9 @@ class OwnerRepositoryTest {
                 .hasValue(owner.getName());
     }
 
+    /**
+     * Test case: When adding three owners, then the database contains exactly three owners.
+     */
     @Test
     void whenAdd3OwnersThenDbHas3Owners() {
         Owner owner1 = new Owner("Aleks", null);
@@ -49,6 +55,9 @@ class OwnerRepositoryTest {
                 .containsExactlyInAnyOrder(owner1.getName(), owner2.getName(), owner3.getName());
     }
 
+    /**
+     * Test case: When updating an owner, then the database reflects the updated name.
+     */
     @Test
     void whenUpdateOwnerThenDbHasSameOwner() {
         Owner owner = new Owner("Aleks", null);
@@ -61,6 +70,9 @@ class OwnerRepositoryTest {
                 .hasValue(owner.getName());
     }
 
+    /**
+     * Test case: When deleting an owner, then the database becomes empty.
+     */
     @Test
     void whenDeleteOwnerThenDbEmpty() {
         Owner owner = new Owner("Aleks", null);
@@ -70,6 +82,9 @@ class OwnerRepositoryTest {
         assertThat(result).isEmpty();
     }
 
+    /**
+     * Test case: When deleting an owner by a non-existing id, then the database remains unchanged.
+     */
     @Test
     void whenDeleteOwnerByNotExistingIdThenDbNotEmpty() {
         Owner owner = new Owner(1, "Aleks", null);
@@ -82,6 +97,10 @@ class OwnerRepositoryTest {
                 .containsExactly(owner.getName());
     }
 
+    /**
+     * Test case: When searching for owners with name containing "Aleks",
+     * then two matching owners are found.
+     */
     @Test
     void whenFindByNameLikeAleksThenDbHasTwoOwners() {
         Owner owner1 = new Owner("Aleks", null);
@@ -95,6 +114,10 @@ class OwnerRepositoryTest {
                 .contains(owner1.getName(), owner2.getName());
     }
 
+    /**
+     * Test case: When searching for owners with name containing "Ivan",
+     * then no owners are found in the database.
+     */
     @Test
     void whenFindByNameLikeIvanThenDbHasNoSuchElements() {
         Owner owner1 = new Owner("Aleks", null);
@@ -105,6 +128,10 @@ class OwnerRepositoryTest {
         assertThat(result).isEmpty();
     }
 
+    /**
+     * Test case: When searching for an owner with name "Aleksey",
+     * then the corresponding owner is found in the database.
+     */
     @Test
     void whenFindByNameAlekseyThenDbHasOwner() {
         Owner owner1 = new Owner("Aleks", null);
@@ -119,6 +146,10 @@ class OwnerRepositoryTest {
                 .hasValue(owner3.getName());
     }
 
+    /**
+     * Test case: When searching for an owner with name "Ivan",
+     * then no owners are found in the database.
+     */
     @Test
     void whenFindByNameIvanThenDbHasNoSuchElements() {
         Owner owner1 = new Owner("Aleks", null);
@@ -131,6 +162,10 @@ class OwnerRepositoryTest {
         assertThat(result).isEmpty();
     }
 
+    /**
+     * Test case: When searching for an owner by user id = 1,
+     * then the corresponding owner is found in the database.
+     */
     @Test
     void whenFindByUserId1ThenDbHasElement() {
         User user = new User();
@@ -149,6 +184,10 @@ class OwnerRepositoryTest {
                 .isEqualTo(owner1);
     }
 
+    /**
+     * Test case: When searching for an owner by user id = 1000,
+     * then no owners are found in the database.
+     */
     @Test
     void whenFindByUserId1000ThenDbHasNoSuchElements() {
         Owner owner1 = new Owner("Aleks", null);

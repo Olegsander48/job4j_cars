@@ -20,6 +20,9 @@ class CarRepositoryTest {
                         new HibernateConfiguration().sf()));
     }
 
+    /**
+     * Test case: When creating a car, then it can be found in the database with the same brand and model.
+     */
     @Test
     void whenCreateCarThenDbHasSameCar() {
         Car car = new Car("Mercedes", "CLS 63", null, null, null, null);
@@ -30,6 +33,9 @@ class CarRepositoryTest {
                 .hasValue(car.getBrand() + car.getModel());
     }
 
+    /**
+     * Test case: When adding three cars, then the database contains exactly three cars in insertion order.
+     */
     @Test
     void whenAdd3CarsThenDbHas3Cars() {
         Car car1 = new Car("Mercedes", "CLS 63", null, null, null, null);
@@ -46,6 +52,9 @@ class CarRepositoryTest {
                         car3.getBrand() + car3.getModel());
     }
 
+    /**
+     * Test case: When updating a car, then the database reflects the updated brand and model.
+     */
     @Test
     void whenUpdateCarThenDbHasSameCar() {
         Car car = new Car("Mercedes", "CLS 63", null, null, null, null);
@@ -58,6 +67,9 @@ class CarRepositoryTest {
                 .hasValue(car.getBrand() + car.getModel());
     }
 
+    /**
+     * Test case: When deleting a car, then the database becomes empty.
+     */
     @Test
     void whenDeleteCarThenDbEmpty() {
         Car car = new Car("Mercedes", "CLS 63", null, null, null, null);
@@ -67,6 +79,9 @@ class CarRepositoryTest {
         assertThat(result).isEmpty();
     }
 
+    /**
+     * Test case: When deleting a car by a non-existing id, then the database remains unchanged.
+     */
     @Test
     void whenDeleteCarByNotExistingIdThenDbNotEmpty() {
         Car car = new Car(1, "Mercedes", "CLS 63", null, null, null, null);
@@ -79,6 +94,10 @@ class CarRepositoryTest {
                 .containsExactly(car.getBrand() + car.getModel());
     }
 
+    /**
+     * Test case: When searching for cars with brand like "Mercedes" and model like "cls",
+     * then two matching cars are found.
+     */
     @Test
     void whenFindByBrandLikeMercedesAndModelLikeClsThenDbHasTwoCars() {
         Car car1 = new Car("Mercedes", "CLS 63s", null, null, null, null);
@@ -92,6 +111,9 @@ class CarRepositoryTest {
                 .containsExactly(car1.getBrand() + car1.getModel(), car2.getBrand() + car2.getModel());
     }
 
+    /**
+     * Test case: When searching for brand "Opel" and model "Astra", then no cars are found in the database.
+     */
     @Test
     void whenFindByBrandLikeOpelAndModelLikeAstraThenDbHasNoSuchElements() {
         Car car1 = new Car("Mercedes", "CLS 63s", null, null, null, null);
@@ -102,6 +124,10 @@ class CarRepositoryTest {
         assertThat(result).isEmpty();
     }
 
+    /**
+     * Test case: When searching for a car with brand "Mercedes" and model "GLE",
+     * then the corresponding car is found in the database.
+     */
     @Test
     void whenFindByBrandMercedesAndModelGleThenDbHasCar() {
         Car car1 = new Car("Mercedes", "GLE", null, null, null, null);
@@ -116,6 +142,10 @@ class CarRepositoryTest {
                 .hasValue(car1.getBrand() + car1.getModel());
     }
 
+    /**
+     * Test case: When searching for a car with brand "Mercedes" and model "EQS",
+     * then no cars are found in the database.
+     */
     @Test
     void whenFindByBranMercedesAndModelEqsThenDbHasNoSuchElements() {
         Car car1 = new Car("Mercedes", "GLE", null, null, null, null);
@@ -128,6 +158,9 @@ class CarRepositoryTest {
         assertThat(result).isEmpty();
     }
 
+    /**
+     * Test case: When retrieving all car brands, then the database returns a list of unique brands in insertion order.
+     */
     @Test
     void whenFindAllCarBrandsThenDbHasThreeBrands() {
         Car car1 = new Car("Mercedes", "GLE", null, null, null, null);

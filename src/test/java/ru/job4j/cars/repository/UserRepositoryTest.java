@@ -20,6 +20,9 @@ class UserRepositoryTest {
                         new HibernateConfiguration().sf()));
     }
 
+    /**
+     * Test case: When creating a user, then it can be found in the database with the same login.
+     */
     @Test
     void whenCreateUserThenDbHasSameUser() {
         User user = new User("testLogin@gmail.com", "TestPassword", null);
@@ -30,6 +33,9 @@ class UserRepositoryTest {
                 .hasValue(user.getLogin());
     }
 
+    /**
+     * Test case: When creating the same user again, then the database still contains the same user without duplication.
+     */
     @Test
     void whenCreateUserThenCreateAgainThenDbHasSameUser() {
         User user = new User("testLogin@gmail.com", "TestPassword", null);
@@ -41,6 +47,9 @@ class UserRepositoryTest {
                 .hasValue(user.getLogin());
     }
 
+    /**
+     * Test case: When adding three users, then the database contains exactly three users.
+     */
     @Test
     void whenAdd3UsersThenDbHas3Users() {
         User user1 = new User("testLogin1@gmail.com", "TestPassword1", null);
@@ -55,6 +64,9 @@ class UserRepositoryTest {
                 .containsExactlyInAnyOrder(user1.getLogin(), user2.getLogin(), user3.getLogin());
     }
 
+    /**
+     * Test case: When updating a user, then the database contains the updated login.
+     */
     @Test
     void whenUpdateUserThenDbHasSameUser() {
         User user = new User("testLogin@gmail.com", "TestPassword", null);
@@ -67,6 +79,9 @@ class UserRepositoryTest {
                 .hasValue(user.getLogin());
     }
 
+    /**
+     * Test case: When deleting a user, then the database is empty.
+     */
     @Test
     void whenDeleteUserThenDbEmpty() {
         User user = new User("testLogin@gmail.com", "TestPassword", null);
@@ -76,6 +91,9 @@ class UserRepositoryTest {
         assertThat(result).isEmpty();
     }
 
+    /**
+     * Test case: When deleting a user by a non-existing ID, then the database remains unchanged.
+     */
     @Test
     void whenDeleteUserByNotExistingIdThenDbNotEmpty() {
         User user = new User(1, "testLogin@gmail.com", "TestPassword", null);
@@ -88,6 +106,9 @@ class UserRepositoryTest {
                 .containsExactly(user.getLogin());
     }
 
+    /**
+     * Test case: When finding users by login containing 'test', then two users are returned.
+     */
     @Test
     void whenFindByLoginLikeTestThenDbHasTwoUsers() {
         User user1 = new User("testLogin1@gmail.com", "TestPassword1", null);
@@ -101,6 +122,9 @@ class UserRepositoryTest {
                 .contains(user1.getLogin(), user2.getLogin());
     }
 
+    /**
+     * Test case: When finding users by login containing 'Ivan', then no users are returned.
+     */
     @Test
     void whenFindByNameLikeIvanThenDbHasNoSuchElements() {
         User user1 = new User("testLogin1@gmail.com", "TestPassword1", null);
@@ -111,6 +135,9 @@ class UserRepositoryTest {
         assertThat(result).isEmpty();
     }
 
+    /**
+     * Test case: When finding a user by exact login, then the corresponding user is returned.
+     */
     @Test
     void whenFindByLoginTestThenDbHasUser() {
         User user1 = new User("testLogin1@gmail.com", "TestPassword1", null);
@@ -125,6 +152,9 @@ class UserRepositoryTest {
                 .hasValue(user2.getLogin());
     }
 
+    /**
+     * Test case: When finding a user by login 'Andrey', then no users are returned.
+     */
     @Test
     void whenFindByLoginAndreyThenDbHasNoSuchElements() {
         User user1 = new User("testLogin1@gmail.com", "TestPassword1", null);
@@ -137,6 +167,9 @@ class UserRepositoryTest {
         assertThat(result).isEmpty();
     }
 
+    /**
+     * Test case: When finding a user by login and password (case-insensitive), then the correct user is returned.
+     */
     @Test
     void whenFindByLoginAndPasswordTestThenDbHasUser() {
         User user1 = new User("testLogin1@gmail.com", "test1", "TestPassword1");

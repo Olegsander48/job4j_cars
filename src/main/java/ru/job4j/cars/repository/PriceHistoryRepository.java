@@ -67,7 +67,7 @@ public class PriceHistoryRepository {
      * @param postId Id поста (публикации, объявления)
      * @return самая последняя запись.
      */
-    public Optional<PriceHistory> findNewestByCarId(int postId) {
+    public Optional<PriceHistory> findNewestByPostId(int postId) {
         List<PriceHistory> priceHistoryList = crudRepository.query(
                 "from PriceHistory ph where ph.post.id = :fPostId order by created desc", PriceHistory.class,
                 Map.of("fPostId", postId));

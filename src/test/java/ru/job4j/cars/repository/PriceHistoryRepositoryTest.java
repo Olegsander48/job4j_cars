@@ -26,6 +26,9 @@ class PriceHistoryRepositoryTest {
                         new HibernateConfiguration().sf()));
     }
 
+    /**
+     * Test case: When creating a price history, then it can be found in the database with the same values.
+     */
     @Test
     void whenCreatePriceHistoryThenDbHasSamePriceHistory() {
         PriceHistory priceHistory = new PriceHistory(1200, 1500, LocalDateTime.now());
@@ -36,6 +39,9 @@ class PriceHistoryRepositoryTest {
                 .isEqualTo(priceHistory);
     }
 
+    /**
+     * Test case: When adding three price histories, then the database contains exactly three entries.
+     */
     @Test
     void whenAdd3PriceHistoriesThenDbHas3PriceHistories() {
         PriceHistory priceHistory1 = new PriceHistory(1200, 1500, LocalDateTime.now());
@@ -49,6 +55,9 @@ class PriceHistoryRepositoryTest {
                 .containsOnly(priceHistory1, priceHistory2, priceHistory3);
     }
 
+    /**
+     * Test case: When updating a price history, then the database reflects the updated values.
+     */
     @Test
     void whenUpdatePriceHistoryThenDbHasSamePriceHistory() {
         PriceHistory priceHistory = new PriceHistory(1200, 1500, LocalDateTime.now());
@@ -61,6 +70,9 @@ class PriceHistoryRepositoryTest {
                 .isEqualTo(priceHistory);
     }
 
+    /**
+     * Test case: When deleting a price history, then the database becomes empty.
+     */
     @Test
     void whenDeletePriceHistoryThenDbEmpty() {
         PriceHistory priceHistory = new PriceHistory(1200, 1500, LocalDateTime.now());
@@ -70,6 +82,9 @@ class PriceHistoryRepositoryTest {
         assertThat(result).isEmpty();
     }
 
+    /**
+     * Test case: When deleting by a non-existing id, then the database remains unchanged.
+     */
     @Test
     void whenDeletePriceHistoryByNotExistingIdThenDbNotEmpty() {
         PriceHistory priceHistory = new PriceHistory(1, 1200, 1500, LocalDateTime.now(), null);
@@ -81,6 +96,9 @@ class PriceHistoryRepositoryTest {
                 .containsOnly(priceHistory);
     }
 
+    /**
+     * Test case: When finding the newest price history by post id, then the most recent entry (by created date) for that post is returned.
+     */
     @Test
     void whenFindNewestByPostIdThenGetSecondPriceHistory() {
         Post post = new Post("test post");
@@ -97,12 +115,15 @@ class PriceHistoryRepositoryTest {
         priceHistoryRepository.create(priceHistory1);
         priceHistoryRepository.create(priceHistory2);
         priceHistoryRepository.create(priceHistory3);
-        Optional<PriceHistory> result = priceHistoryRepository.findNewestByCarId(post.getId());
+        Optional<PriceHistory> result = priceHistoryRepository.findNewestByPostId(post.getId());
         assertThat(result).isPresent()
                 .get()
                 .isEqualTo(priceHistory2);
     }
 
+    /**
+     * Test case: When deleting price histories by post id, then all price histories associated with that post are removed.
+     */
     @Test
     void whenDeleteByPostIdThenDbEmpty() {
         Post post = new Post("test post");
@@ -124,6 +145,9 @@ class PriceHistoryRepositoryTest {
         assertThat(result).isEmpty();
     }
 
+    /**
+     * Test case: When deleting price histories by a non-existing post id, then the database remains unchanged.
+     */
     @Test
     void whenDeleteByPostId200ThenDbNotEmpty() {
         Post post = new Post("test post");

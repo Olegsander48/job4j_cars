@@ -28,7 +28,7 @@ public class UserController {
             userService.create(user);
             return "redirect:/posts";
         } catch (Exception exception) {
-            model.addAttribute("message", "User with such email already exists");
+            model.addAttribute("message", exception.getMessage());
             return "fragments/errors/404";
         }
     }

@@ -26,6 +26,9 @@ class PostRepositoryTest {
                         new HibernateConfiguration().sf()));
     }
 
+    /**
+     * Test case: When creating a post, then it can be found in the database with the same description.
+     */
     @Test
     void whenCreatePostThenDbHasSamePost() {
         Post post = new Post("test description");
@@ -36,6 +39,9 @@ class PostRepositoryTest {
                 .hasValue(post.getDescription());
     }
 
+    /**
+     * Test case: When adding three posts, then the database contains exactly three posts.
+     */
     @Test
     void whenAdd3PostsThenDbHas3Posts() {
         Post post1 = new Post("test description1");
@@ -50,6 +56,9 @@ class PostRepositoryTest {
                 .containsExactlyInAnyOrder(post1.getDescription(), post2.getDescription(), post3.getDescription());
     }
 
+    /**
+     * Test case: When updating a post, then the database reflects the updated description.
+     */
     @Test
     void whenUpdatePostThenDbHasSamePost() {
         Post post = new Post("test description");
@@ -62,6 +71,9 @@ class PostRepositoryTest {
                 .hasValue(post.getDescription());
     }
 
+    /**
+     * Test case: When deleting a post, then the database becomes empty.
+     */
     @Test
     void whenDeletePostThenDbEmpty() {
         Post post = new Post("test description");
@@ -71,6 +83,9 @@ class PostRepositoryTest {
         assertThat(result).isEmpty();
     }
 
+    /**
+     * Test case: When deleting a post by a non-existing id, then the database remains unchanged.
+     */
     @Test
     void whenDeletePostByNotExistingIdThenDbNotEmpty() {
         Post post = new Post("test description");
@@ -84,6 +99,9 @@ class PostRepositoryTest {
                 .containsExactly(post.getDescription());
     }
 
+    /**
+     * Test case: When searching posts by description using LIKE 'test', then two matching posts are returned.
+     */
     @Test
     void whenFindByDescriptionLikeTestThenDbHasTwoPosts() {
         Post post1 = new Post("test description1");
@@ -97,6 +115,9 @@ class PostRepositoryTest {
                 .contains(post1.getDescription(), post2.getDescription());
     }
 
+    /**
+     * Test case: When searching posts by description using LIKE with no matches, then the result is empty.
+     */
     @Test
     void whenFindByDescriptionLikeNullThenDbHasNoSuchElements() {
         Post post1 = new Post("test description1");
@@ -107,6 +128,9 @@ class PostRepositoryTest {
         assertThat(result).isEmpty();
     }
 
+    /**
+     * Test case: When searching a post by exact description 'test', then the corresponding post is returned.
+     */
     @Test
     void whenFindByDescriptionTestThenDbHasPost() {
         Post post1 = new Post("test description1");
@@ -121,6 +145,9 @@ class PostRepositoryTest {
                 .hasValue(post2.getDescription());
     }
 
+    /**
+     * Test case: When searching a post by exact description with no matches, then the result is empty.
+     */
     @Test
     void whenFindByPostNullThenDbHasNoSuchElements() {
         Post post1 = new Post("test description1");
@@ -133,6 +160,9 @@ class PostRepositoryTest {
         assertThat(result).isEmpty();
     }
 
+    /**
+     * Test case: When finding posts created within the last day, then only recent posts are returned.
+     */
     @Test
     void whenFindByLastDayThenDbHasOnePost() {
         Post post1 = new Post("test description1");
@@ -148,6 +178,9 @@ class PostRepositoryTest {
                 .containsOnly(post1.getDescription());
     }
 
+    /**
+     * Test case: When finding posts created within the last day and none are recent, then the result is empty.
+     */
     @Test
     void whenFindByLastDayThenDbHasNoSuchElements() {
         Post post1 = new Post("test description1");
@@ -160,6 +193,9 @@ class PostRepositoryTest {
         assertThat(result).isEmpty();
     }
 
+    /**
+     * Test case: When finding posts with non-null photoPath, then posts having photo paths are returned.
+     */
     @Test
     void whenFindByNotNullPhotoPathThenDbHasOnePost() {
         Post post1 = new Post("test description1");
@@ -177,6 +213,9 @@ class PostRepositoryTest {
                 .containsOnly(post1.getPhotoPath(), post2.getPhotoPath());
     }
 
+    /**
+     * Test case: When finding posts with non-null photoPath and none have a photo, then the result is empty.
+     */
     @Test
     void whenFindByNotNullPhotoPathThenDbHasNoSuchElements() {
         Post post1 = new Post("test description1");
@@ -189,6 +228,9 @@ class PostRepositoryTest {
         assertThat(result).isEmpty();
     }
 
+    /**
+     * Test case: When finding posts by car brand 'Mercedes', then posts linked to that brand are returned.
+     */
     @Test
     void whenFindByCarBrandMercedesThenDbHasOnePost() {
         Car car1 = new Car("Mercedes", "CLS 63", null, null, null, null);
@@ -214,6 +256,9 @@ class PostRepositoryTest {
                 .containsOnly(post1.getDescription());
     }
 
+    /**
+     * Test case: When finding posts by car brand 'Opel' and no such brand exists, then the result is empty.
+     */
     @Test
     void whenFindByCarBrandOpelThenDbHasNoSuchElements() {
         Car car1 = new Car("Mercedes", "CLS 63", null, null, null, null);

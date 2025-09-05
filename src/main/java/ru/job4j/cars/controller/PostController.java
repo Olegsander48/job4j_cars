@@ -7,20 +7,20 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.job4j.cars.dto.CarPost;
 import ru.job4j.cars.model.User;
-import ru.job4j.cars.repository.CarRepository;
+import ru.job4j.cars.service.car.CarService;
 import ru.job4j.cars.service.carpost.CarPostService;
 
 @Controller
 @RequestMapping("/posts")
 @AllArgsConstructor
 public class PostController {
-    private CarRepository carRepository;
+    private CarService carService;
     private CarPostService carPostService;
 
     @GetMapping
     public String getAllPosts(Model model) {
         model.addAttribute("carPosts", carPostService.findAllOrderById());
-        model.addAttribute("carBrands", carRepository.findAllCarBrands());
+        model.addAttribute("carBrands", carService.findAllCarBrands());
         return "posts/list";
     }
 
