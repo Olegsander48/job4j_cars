@@ -27,14 +27,14 @@
                     <a class="nav-item nav-link active h5 px-3" th:href="@{/posts}">Объявления</a>
                     <a class="nav-item nav-link active h5 px-3" th:href="@{/posts/create}">Опубликовать объявление</a>
                 </div>
-<!--                <div class="d-flex" th:if="${user.id == 0}">
+                <div class="d-flex" th:if="${session.user.id == 0}">
                     <a class="nav-link text-secondary me-3 h5" th:href="@{/users/register}">Регистрация</a>
                     <a class="nav-link text-secondary h5" th:href="@{/users/login}">Войти</a>
                 </div>
-                <div class="d-flex" th:if="${user.id != 0}">
-                    <a class="nav-link text-secondary me-3 h5" href="#" th:text="${user.name}"></a>
+                <div class="d-flex" th:if="${session.user.id != 0}">
+                    <a class="nav-link text-secondary me-3 h5" href="#" th:text="${session.user.name}"></a>
                     <a class="nav-link text-secondary h5" th:href="@{/users/logout}">Выйти</a>
-                </div>-->
+                </div>
             </div>
         </div>
     </nav>

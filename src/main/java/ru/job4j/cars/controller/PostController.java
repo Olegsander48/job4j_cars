@@ -71,11 +71,15 @@ public class PostController {
     }
 
     @GetMapping("/edit/{id}")
-    public String getEditPage(@PathVariable int id, Model model) {
+    public String getEditPage(@PathVariable int id, Model model, @SessionAttribute User user) {
         var carPost = carPostService.findById(id);
         if (carPost.isEmpty()) {
             model.addAttribute("message", "No car post with id " + id);
             return "fragments/errors/404";
+        }
+        if (carPost.get().getUserId() != user.getId()) {
+            model.addAttribute("message", "No permission to edit this car post");
+            return "fragments/errors/403";
         }
         model.addAttribute("carPost", carPost.get());
         return "posts/edit";

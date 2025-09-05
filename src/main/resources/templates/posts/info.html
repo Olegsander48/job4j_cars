@@ -5,7 +5,7 @@
 <div class="container">
     <div class="row mt-3">
         <div class="col-5">
-            <a th:href="@{/posts/info/{id}(id=*{carPost.id})}"><img th:src="@{/uploads/{fileName}(fileName=*{carPost.photoPath})}" class="w-100" alt="No image"></a>
+            <img th:src="@{/uploads/{fileName}(fileName=*{carPost.photoPath})}" class="w-100" alt="No image">
         </div>
         <div class="col-7">
             <div class="row">
@@ -73,7 +73,12 @@
                 <div class="col-2"></div>
                 <div class="col-8">
                     <a class="btn btn-success w-100"
-                       th:href="@{/posts/edit/{id}(id=${carPost.id})}">Редактировать</a></div>
+                       th:classappend="${carPost.userId == session.user.id} ? '' : 'disabled'"
+                       th:href="@{/posts/edit/{id}(id=${carPost.id})}"
+                       th:attr="tabindex=${carPost.userId == session.user.id} ? null : -1">
+                        Редактировать
+                    </a>
+                </div>
             </div>
         </div>
         <div class="col-4">
@@ -81,7 +86,12 @@
                 <div class="col-2"></div>
                 <div class="col-8">
                     <a class="btn btn-danger w-100"
-                       th:href="@{/posts/delete/{id}(id=${carPost.id}, photoPath = ${carPost.photoPath})}">Удалить</a></div>
+                       th:classappend="${carPost.userId == session.user.id} ? '' : 'disabled'"
+                       th:href="@{/posts/delete/{id}(id=${carPost.id}, photoPath = ${carPost.photoPath})}"
+                       th:attr="tabindex=${carPost.userId == session.user.id} ? null : -1">
+                        Удалить
+                    </a>
+                </div>
             </div>
         </div>
         <div class="col-4">

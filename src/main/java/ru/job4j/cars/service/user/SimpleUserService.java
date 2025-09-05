@@ -78,4 +78,15 @@ public class SimpleUserService implements UserService {
         }
         return userRepository.findByLogin(login.toLowerCase().trim());
     }
+
+    @Override
+    public Optional<User> findByLoginAndPassword(String login, String password) {
+        if (login == null || login.isBlank()) {
+            throw new IllegalArgumentException("login cannot be null/empty");
+        }
+        if (password == null || password.isBlank()) {
+            throw new IllegalArgumentException("password cannot be null/empty");
+        }
+        return userRepository.findByLoginAndPassword(login, password);
+    }
 }

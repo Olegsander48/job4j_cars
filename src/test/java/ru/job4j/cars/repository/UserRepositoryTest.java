@@ -136,4 +136,18 @@ class UserRepositoryTest {
         Optional<User> result = userRepository.findByLogin("Andrey");
         assertThat(result).isEmpty();
     }
+
+    @Test
+    void whenFindByLoginAndPasswordTestThenDbHasUser() {
+        User user1 = new User("testLogin1@gmail.com", "test1", "TestPassword1");
+        User user2 = new User("testLogin2@gmail.com", "test2", "TestPassword2");
+        User user3 = new User("testLogin3@gmail.com", "test3", "TestPassword3");
+        userRepository.create(user1);
+        userRepository.create(user2);
+        userRepository.create(user3);
+        Optional<User> result = userRepository.findByLoginAndPassword("testLOGIN2@gmail.com", "TestPaSSWOrd2");
+        assertThat(result).isPresent()
+                .get()
+                .isEqualTo(user2);
+    }
 }

@@ -50,7 +50,6 @@ public class SimpleCarPostService implements CarPostService {
     @Override
     @Transactional
     public void update(CarPost entity) {
-        System.out.println("================= its entity " + entity);
         Optional<Engine> engine = engineRepository.findById(entity.getEngineId());
         if (engine.isPresent()) {
             engine.get().setName(entity.getEngine());
