@@ -10,6 +10,7 @@ import org.springframework.ui.ConcurrentModel;
 import org.springframework.web.multipart.MultipartFile;
 import ru.job4j.cars.dto.CarPost;
 import ru.job4j.cars.model.User;
+import ru.job4j.cars.security.AccessService;
 import ru.job4j.cars.service.car.CarService;
 import ru.job4j.cars.service.carpost.CarPostService;
 import java.io.IOException;
@@ -22,6 +23,7 @@ class PostControllerTest {
     private CarPostService carPostService;
     private CarService carService;
     private PostController postController;
+    private AccessService accessService;
     private User user;
     private MultipartFile file;
 
@@ -29,10 +31,11 @@ class PostControllerTest {
     void setUp() {
         carPostService = Mockito.mock(CarPostService.class);
         carService = Mockito.mock(CarService.class);
+        accessService = Mockito.mock(AccessService.class);
 
         file = mock(MultipartFile.class);
         user = new User("Aleks", "Aliev", "Sqwerty123");
-        postController = new PostController(carService, carPostService);
+        postController = new PostController(carService, carPostService, accessService);
 
     }
 
@@ -138,7 +141,7 @@ class PostControllerTest {
      */
     @Test
     void whenDeleteCarPostThenRedirectToPostsPage() {
-        when(carPostService.checkPermission(1, user)).thenReturn(true);
+        when(accessService.checkPermission(1, user)).thenReturn(true);
 
         var model = new ConcurrentModel();
         var view = postController.deleteCarPost(1, model, "testPath", user);
@@ -151,7 +154,7 @@ class PostControllerTest {
      */
     @Test
     void whenDeleteCarPostThenErrorViewWithNoPermissionReturned() {
-        when(carPostService.checkPermission(1, user)).thenReturn(false);
+        when(accessService.checkPermission(1, user)).thenReturn(false);
 
         var model = new ConcurrentModel();
         var view = postController.deleteCarPost(1, model, "testPath", user);
@@ -166,7 +169,7 @@ class PostControllerTest {
      */
     @Test
     void whenDeleteCarPostThenErrorViewWithNoCarFoundExceptionReturned() throws IOException {
-        when(carPostService.checkPermission(1000, user)).thenReturn(true);
+        when(accessService.checkPermission(1000, user)).thenReturn(true);
         Mockito.doThrow(new NoSuchElementException("No car post found with id 1000"))
                 .when(carPostService).delete(1000, "testPath");
 
@@ -184,7 +187,7 @@ class PostControllerTest {
     @Test
     void whenGetEditPageThenCarPostAddedToModelAndReturnedEditPage() {
         var carPost = Optional.of(new CarPost());
-        when(carPostService.checkPermission(1, user)).thenReturn(true);
+        when(accessService.checkPermission(1, user)).thenReturn(true);
         when(carPostService.findById(1)).thenReturn(carPost);
 
         var model = new ConcurrentModel();
@@ -200,7 +203,7 @@ class PostControllerTest {
      */
     @Test
     void whenGetCarPostThenErrorViewWithNoPermissionReturned() {
-        when(carPostService.checkPermission(1, user)).thenReturn(false);
+        when(accessService.checkPermission(1, user)).thenReturn(false);
 
         var model = new ConcurrentModel();
         var view = postController.getEditPage(1, model, user);
@@ -215,7 +218,7 @@ class PostControllerTest {
      */
     @Test
     void whenGetCarPostThenErrorViewWithNoCarFoundExceptionReturned() {
-        when(carPostService.checkPermission(1000, user)).thenReturn(true);
+        when(accessService.checkPermission(1000, user)).thenReturn(true);
 
         var model = new ConcurrentModel();
         var view = postController.getEditPage(1000, model, user);

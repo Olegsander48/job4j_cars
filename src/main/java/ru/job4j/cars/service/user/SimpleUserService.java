@@ -22,7 +22,7 @@ public class SimpleUserService implements UserService {
             throw new IllegalArgumentException("Entity cannot be null");
         }
         if (findByLogin(entity.getLogin()).isPresent()) {
-            throw new IllegalArgumentException("User already exists");
+            throw new IllegalArgumentException("User with such login already exists");
         }
         return userRepository.create(entity);
     }

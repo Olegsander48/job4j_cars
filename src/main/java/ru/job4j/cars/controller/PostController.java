@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.job4j.cars.dto.CarPost;
 import ru.job4j.cars.model.User;
+import ru.job4j.cars.security.AccessService;
 import ru.job4j.cars.service.car.CarService;
 import ru.job4j.cars.service.carpost.CarPostService;
 
@@ -16,6 +17,7 @@ import ru.job4j.cars.service.carpost.CarPostService;
 public class PostController {
     private CarService carService;
     private CarPostService carPostService;
+    private AccessService accessService;
 
     @GetMapping
     public String getAllPosts(Model model) {
@@ -58,7 +60,7 @@ public class PostController {
     public String deleteCarPost(@PathVariable int id, Model model, @RequestParam String photoPath,
                                 @SessionAttribute User user) {
         try {
-            if (!carPostService.checkPermission(id, user)) {
+            if (!accessService.checkPermission(id, user)) {
                 model.addAttribute("message", "No permission to delete this car post");
                 return "fragments/errors/403";
             }
@@ -73,7 +75,7 @@ public class PostController {
     @GetMapping("/edit/{id}")
     public String getEditPage(@PathVariable int id, Model model, @SessionAttribute User user) {
         try {
-            if (!carPostService.checkPermission(id, user)) {
+            if (!accessService.checkPermission(id, user)) {
                 model.addAttribute("message", "No permission to edit this car post");
                 return "fragments/errors/403";
             }

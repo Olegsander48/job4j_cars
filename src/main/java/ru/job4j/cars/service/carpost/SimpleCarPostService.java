@@ -161,17 +161,4 @@ public class SimpleCarPostService implements CarPostService {
                         post.getCreated()))
                 .toList();
     }
-
-    @Override
-    @Transactional
-    public boolean checkPermission(int carPostId, User user) {
-        Optional<CarPost> carPost = findById(carPostId);
-        if (carPost.isEmpty()) {
-            throw new NoSuchElementException("No car post found with id " + carPostId);
-        }
-        if (user == null) {
-            throw new IllegalArgumentException("Invalid user");
-        }
-        return carPost.get().getUserId() == user.getId();
-    }
 }

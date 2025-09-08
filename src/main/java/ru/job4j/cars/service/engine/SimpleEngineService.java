@@ -51,8 +51,8 @@ public class SimpleEngineService implements EngineService {
 
     @Override
     public Optional<Engine> findById(int id) {
-        if (id <= 0) {
-            throw new IllegalArgumentException("Id cannot be negative or zero");
+        if (id < 0) {
+            throw new IllegalArgumentException("Id cannot be negative");
         }
         return engineRepository.findById(id);
     }
