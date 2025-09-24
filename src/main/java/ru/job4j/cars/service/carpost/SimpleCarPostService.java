@@ -28,6 +28,11 @@ public class SimpleCarPostService implements CarPostService {
     private final PriceHistoryService priceHistoryService;
     private final PhotoUtility photoUtility;
 
+    /**
+     * Save data from CarPost to {@link User}, {@link Owner}, {@link Engine}, {@link Car}, {@link Post} and {@link PriceHistory}
+     * @param carPost object to save
+     * @return same object that we pass to arguments
+     */
     @Override
     @Transactional
     public CarPost create(CarPost carPost) {
@@ -56,6 +61,14 @@ public class SimpleCarPostService implements CarPostService {
         return carPost;
     }
 
+    /**
+     * Same method as {@link SimpleCarPostService#create(CarPost)}, saves CarPost + car image
+     * @param entity object to save
+     * @param file Car image
+     * @return same object that we pass to arguments
+     * @throws IOException if problems with file
+     * @throws InterruptedException if thread is interrupted
+     */
     @Override
     @Transactional
     public CarPost create(CarPost entity, MultipartFile file) throws IOException, InterruptedException {
@@ -64,6 +77,11 @@ public class SimpleCarPostService implements CarPostService {
         return create(entity);
     }
 
+    /**
+     * Update data from CarPost to {@link User}, {@link Owner}, {@link Engine}, {@link Car}, {@link Post} and {@link PriceHistory}.
+     * Only the changed values are updated
+     * @param entity object to update
+     */
     @Override
     @Transactional
     public void update(CarPost entity) {
@@ -102,6 +120,13 @@ public class SimpleCarPostService implements CarPostService {
         }
     }
 
+    /**
+     * Same method as {@link SimpleCarPostService#update(CarPost)}. Update CarPost + image
+     * @param entity object to update
+     * @param file Car image
+     * @throws IOException if problems with file
+     * @throws InterruptedException if thread is interrupted
+     */
     @Override
     @Transactional
     public void update(CarPost entity, MultipartFile file) throws IOException, InterruptedException {
@@ -112,6 +137,12 @@ public class SimpleCarPostService implements CarPostService {
         update(entity);
     }
 
+    /**
+     * Save method as {@link SimpleCarPostService#delete(int)}. Delete values from DB + delete car image
+     * @param id of CarPost
+     * @param photoPath path of photo
+     * @throws IOException if problems with file
+     */
     @Override
     @Transactional
     public void delete(int id, String photoPath) throws IOException {
@@ -119,6 +150,10 @@ public class SimpleCarPostService implements CarPostService {
         delete(id);
     }
 
+    /**
+     * Delete values from {@link PriceHistory}, {@link Post} and {@link Car}
+     * @param id of CarPost
+     */
     @Override
     @Transactional
     public void delete(int id) {
@@ -132,6 +167,11 @@ public class SimpleCarPostService implements CarPostService {
         carOptional.ifPresent(car -> carService.delete(car.getId()));
     }
 
+    /**
+     * Finds CarPost by id. Uses {@link SimpleCarPostService#findAllOrderById()} with filter
+     * @param id of CarPost
+     * @return optional of {@link CarPost} or empty
+     */
     @Override
     @Transactional
     public Optional<CarPost> findById(int id) {
@@ -140,6 +180,10 @@ public class SimpleCarPostService implements CarPostService {
                 .findFirst();
     }
 
+    /**
+     * Load data from {@link User}, {@link Owner}, {@link Engine}, {@link Car}, {@link Post} and {@link PriceHistory} and creates objects of dto {@link CarPost}
+     * @return list of CarPost
+     */
     @Override
     @Transactional
     public List<CarPost> findAllOrderById() {
